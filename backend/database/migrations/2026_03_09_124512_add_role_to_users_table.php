@@ -16,8 +16,10 @@ return new class extends Migration
             $table->string('role', 20)->default('CUSTOMER')->after('email');
         });
 
-        DB::statement("ALTER TABLE users ADD CONSTRAINT users_role_check CHECK (role IN ('ADMIN', 'CUSTOMER'))");
-        DB::statement("CREATE UNIQUE INDEX users_single_admin_idx ON users (role) WHERE role = 'ADMIN'");
+        if (DB::getDriverName() === 'pgsql') {
+            DB::statement("ALTER TABLE users ADD CONSTRAINT users_role_check CHECK (role IN ('ADMIN', 'CUSTOMER'))");
+            DB::statement("CREATE UNIQUE INDEX users_single_admin_idx ON users (role) WHERE role = 'ADMIN'");
+        }
     }
 
     /**
@@ -25,8 +27,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::statement('DROP INDEX IF EXISTS users_single_admin_idx');
-        DB::statement('ALTER TABLE users DROP CONSTRAINT IF EXISTS users_role_check');
+        if (DB::getDriverName() === 'pgsql') {
+            DB::statement('DROP INDEX IF EXISTS users_single_admin_idx');
+            DB::statement('ALTER TABLE users DROP CONSTRAINT IF EXISTS users_role_check');
+        }
 
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('role');
