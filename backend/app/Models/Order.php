@@ -16,6 +16,18 @@ class Order extends Model
     public const STATUS_DELIVERED = 'DELIVERED';
     public const STATUS_CANCELED = 'CANCELED';
 
+    public const PAYMENT_CARD = 'CARD';
+    public const PAYMENT_CRYPTO = 'CRYPTO';
+    public const PAYMENT_BANK_TRANSFER = 'BANK_TRANSFER';
+    public const PAYMENT_CASH_ON_DELIVERY = 'CASH_ON_DELIVERY';
+
+    public const SHIPPING_EMAIL = 'EMAIL';
+    public const SHIPPING_PICKUP = 'PICKUP';
+    public const SHIPPING_COURIER = 'COURIER';
+    public const SHIPPING_ALZABOX = 'ALZABOX';
+    public const SHIPPING_POST_OFFICE = 'POST_OFFICE';
+    public const SHIPPING_PACKETA = 'PACKETA';
+
     /**
      * @var list<string>
      */
@@ -79,5 +91,47 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
-}
 
+    /**
+     * @return list<string>
+     */
+    public static function paymentMethods(): array
+    {
+        return [
+            self::PAYMENT_CARD,
+            self::PAYMENT_CRYPTO,
+            self::PAYMENT_BANK_TRANSFER,
+            self::PAYMENT_CASH_ON_DELIVERY,
+        ];
+    }
+
+    /**
+     * @return list<string>
+     */
+    public static function shippingMethods(): array
+    {
+        return [
+            self::SHIPPING_EMAIL,
+            self::SHIPPING_PICKUP,
+            self::SHIPPING_COURIER,
+            self::SHIPPING_ALZABOX,
+            self::SHIPPING_POST_OFFICE,
+            self::SHIPPING_PACKETA,
+        ];
+    }
+
+    /**
+     * @return array<string, float>
+     */
+    public static function shippingPrices(): array
+    {
+        return [
+            self::SHIPPING_EMAIL => 0.0,
+            self::SHIPPING_PICKUP => 0.0,
+            self::SHIPPING_COURIER => 5.0,
+            self::SHIPPING_ALZABOX => 3.0,
+            self::SHIPPING_POST_OFFICE => 5.0,
+            self::SHIPPING_PACKETA => 3.0,
+        ];
+    }
+}
