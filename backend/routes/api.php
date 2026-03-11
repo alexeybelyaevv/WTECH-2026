@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\CatalogProductController;
 use App\Http\Controllers\Api\AdminProductController;
+use App\Http\Controllers\Api\AdminPromoCodeController;
 use App\Http\Controllers\Api\OrderController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,5 +27,12 @@ Route::prefix('admin')->middleware(['web', 'auth', 'admin'])->group(function () 
         Route::put('/{product}', [AdminProductController::class, 'update']);
         Route::delete('/{product}', [AdminProductController::class, 'destroy']);
         Route::delete('/{product}/images/{image}', [AdminProductController::class, 'destroyImage']);
+    });
+
+    Route::prefix('promo-codes')->group(function () {
+        Route::get('/', [AdminPromoCodeController::class, 'index']);
+        Route::post('/', [AdminPromoCodeController::class, 'store']);
+        Route::put('/{promoCode}', [AdminPromoCodeController::class, 'update']);
+        Route::delete('/{promoCode}', [AdminPromoCodeController::class, 'destroy']);
     });
 });
