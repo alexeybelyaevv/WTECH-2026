@@ -5,10 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>L — Cart</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
-    body { font-family: 'DM Sans', sans-serif; }
-    .font-display { font-family: 'Playfair Display', serif; }
+    body { font-family: 'Montserrat', sans-serif; }
+    .font-display { font-family: 'Montserrat', sans-serif; }
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type=number] { -moz-appearance: textfield; }
   </style>
 </head>
 <body class="bg-white text-gray-900 antialiased">
@@ -27,144 +33,36 @@
       </a>
       <a href="cart.html" title="Cart">
       <button class="relative ml-1 p-1.5 rounded hover:bg-gray-100 transition-colors">
-        <!-- Cart icon -->
         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9m12-9l2 9M9 21a1 1 0 100-2 1 1 0 000 2zm6 0a1 1 0 100-2 1 1 0 000 2z"/>
         </svg>
-        <span class="absolute -top-1 -right-1 bg-gray-900 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-medium">2</span>
+        <span id="cartCountBadge" class="hidden absolute -top-1 -right-1 bg-gray-900 text-white text-[10px] min-w-4 h-4 px-1 rounded-full flex items-center justify-center font-medium">0</span>
       </button>
       </a>
     </div>
   </nav>
 
-  <!-- CART ITEMS -->
-  <div class="max-w-3xl mx-auto px-4">
-
-    <!-- Item -->
-    <div class="flex gap-4 py-5 border-b border-gray-100">
-      <div class="relative shrink-0">
-        <div class="w-24 h-24 bg-gray-100 rounded-lg"></div>
-        <button class="absolute top-1.5 right-1.5 w-6 h-6 bg-white rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50" title="button">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
-          </svg>
-        </button>
-      </div>
-      <div class="flex-1">
-        <p class="text-sm font-semibold">"PowerPulse" Compression Tank Top</p>
-        <p class="text-xs text-gray-400 mt-1 leading-relaxed">Compression tank top designed to enhance circulation and muscle support during workouts, made from breathable fabric</p>
-        <p class="text-sm font-semibold mt-3">$34.99</p>
-      </div>
-    </div>
-    <div class="flex items-center justify-between px-0 py-2.5 border-b border-gray-100">
-      <span class="text-[10px] tracking-widest uppercase text-gray-400 font-medium">Quantity</span>
-      <div class="flex items-center gap-2">
-        <button class="w-8 h-8 rounded-full border border-gray-200 text-gray-700 hover:border-gray-400 hover:bg-gray-50 flex items-center justify-center" aria-label="Decrease quantity">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6"/></svg>
-        </button>
-        <span class="text-sm font-semibold tabular-nums w-6 text-center select-none">1</span>
-        <button class="w-8 h-8 rounded-full border border-gray-200 text-gray-700 hover:border-gray-400 hover:bg-gray-50 flex items-center justify-center" aria-label="Increase quantity">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12M18 12H6"/></svg>
-        </button>
-      </div>
+  <div class="max-w-3xl mx-auto px-4 pb-32">
+    <div class="pt-5 pb-2">
+      <h1 class="text-xl font-display font-bold">Your Cart</h1>
+      <p class="text-sm text-gray-500 mt-1">Change quantity directly in cart. If quantity is set to 0, the product is removed automatically.</p>
     </div>
 
-    <!-- Item 2 -->
-    <div class="flex gap-4 py-5 border-b border-gray-100">
-      <div class="relative shrink-0">
-        <div class="w-24 h-24 bg-gray-100 rounded-lg"></div>
-        <button class="absolute top-1.5 right-1.5 w-6 h-6 bg-white rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50" title="button">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
-          </svg>
-        </button>
-      </div>
-      <div class="flex-1">
-        <p class="text-sm font-semibold">"PowerPulse" Compression Tank Top</p>
-        <p class="text-xs text-gray-400 mt-1 leading-relaxed">Compression tank top designed to enhance circulation and muscle support during workouts, made from breathable fabric</p>
-        <p class="text-sm font-semibold mt-3">$34.99</p>
-      </div>
-    </div>
-    <div class="flex items-center justify-between px-0 py-2.5 border-b border-gray-100">
-      <span class="text-[10px] tracking-widest uppercase text-gray-400 font-medium">Quantity</span>
-      <div class="flex items-center gap-2">
-        <button class="w-8 h-8 rounded-full border border-gray-200 text-gray-700 hover:border-gray-400 hover:bg-gray-50 flex items-center justify-center" aria-label="Decrease quantity">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6"/></svg>
-        </button>
-        <span class="text-sm font-semibold tabular-nums w-6 text-center select-none">1</span>
-        <button class="w-8 h-8 rounded-full border border-gray-200 text-gray-700 hover:border-gray-400 hover:bg-gray-50 flex items-center justify-center" aria-label="Increase quantity">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12M18 12H6"/></svg>
-        </button>
-      </div>
+    <div id="cartItems" class="border-t border-gray-100"></div>
+
+    <div id="emptyCartState" class="hidden py-12 text-center border-t border-b border-gray-100 mt-3">
+      <p class="text-sm text-gray-600">Your cart is empty.</p>
+      <a href="shop.html" class="inline-block mt-4 px-5 py-2 rounded-lg bg-gray-900 text-white text-sm font-semibold hover:bg-black transition-colors">Go to shop</a>
     </div>
 
-    <!-- Item 3 -->
-    <div class="flex gap-4 py-5 border-b border-gray-100">
-      <div class="relative shrink-0">
-        <div class="w-24 h-24 bg-gray-100 rounded-lg"></div>
-        <button class="absolute top-1.5 right-1.5 w-6 h-6 bg-white rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50" title="button">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
-          </svg>
-        </button>
-      </div>
-      <div class="flex-1">
-        <p class="text-sm font-semibold">"PowerPulse" Compression Tank Top</p>
-        <p class="text-xs text-gray-400 mt-1 leading-relaxed">Compression tank top designed to enhance circulation and muscle support during workouts, made from breathable fabric</p>
-        <p class="text-sm font-semibold mt-3">$34.99</p>
-      </div>
-    </div>
-    <div class="flex items-center justify-between px-0 py-2.5 border-b border-gray-100">
-      <span class="text-[10px] tracking-widest uppercase text-gray-400 font-medium">Quantity</span>
-      <div class="flex items-center gap-2">
-        <button class="w-8 h-8 rounded-full border border-gray-200 text-gray-700 hover:border-gray-400 hover:bg-gray-50 flex items-center justify-center" aria-label="Decrease quantity">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6"/></svg>
-        </button>
-        <span class="text-sm font-semibold tabular-nums w-6 text-center select-none">1</span>
-        <button class="w-8 h-8 rounded-full border border-gray-200 text-gray-700 hover:border-gray-400 hover:bg-gray-50 flex items-center justify-center" aria-label="Increase quantity">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12M18 12H6"/></svg>
-        </button>
-      </div>
-    </div>
-
-    <!-- Item 4 -->
-    <div class="flex gap-4 py-5 border-b border-gray-100">
-      <div class="relative shrink-0">
-        <div class="w-24 h-24 bg-gray-100 rounded-lg"></div>
-        <button class="absolute top-1.5 right-1.5 w-6 h-6 bg-white rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50" title="button">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
-          </svg>
-        </button>
-      </div>
-      <div class="flex-1">
-        <p class="text-sm font-semibold">"PowerPulse" Compression Tank Top</p>
-        <p class="text-xs text-gray-400 mt-1 leading-relaxed">Compression tank top designed to enhance circulation and muscle support during workouts, made from breathable fabric</p>
-        <p class="text-sm font-semibold mt-3">$34.99</p>
-      </div>
-    </div>
-    <div class="flex items-center justify-between px-0 py-2.5 border-b border-gray-100">
-      <span class="text-[10px] tracking-widest uppercase text-gray-400 font-medium">Quantity</span>
-      <div class="flex items-center gap-2">
-        <button class="w-8 h-8 rounded-full border border-gray-200 text-gray-700 hover:border-gray-400 hover:bg-gray-50 flex items-center justify-center" aria-label="Decrease quantity">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6"/></svg>
-        </button>
-        <span class="text-sm font-semibold tabular-nums w-6 text-center select-none">1</span>
-        <button class="w-8 h-8 rounded-full border border-gray-200 text-gray-700 hover:border-gray-400 hover:bg-gray-50 flex items-center justify-center" aria-label="Increase quantity">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12M18 12H6"/></svg>
-        </button>
-      </div>
-    </div>
-
-    <!-- Summary + Order -->
-    <div class="py-5 space-y-2.5 pb-28">
+    <div id="cartSummary" class="py-5 space-y-2.5 pb-10">
       <div class="flex justify-between text-sm">
         <span class="text-gray-500">Number of products</span>
-        <span class="font-medium">2</span>
+        <span id="summaryProducts" class="font-medium">0</span>
       </div>
       <div class="flex justify-between text-sm">
         <span class="text-gray-500">Subtotal</span>
-        <span class="font-medium">$94,98</span>
+        <span id="summarySubtotal" class="font-medium">$0.00</span>
       </div>
       <div class="flex justify-between text-sm">
         <span class="text-gray-500">Shipment</span>
@@ -172,19 +70,173 @@
       </div>
       <div class="flex justify-between text-sm pt-2 border-t border-gray-100">
         <span class="font-medium">Total</span>
-        <span class="font-bold">$94,98</span>
+        <span id="summaryTotal" class="font-bold">$0.00</span>
       </div>
     </div>
   </div>
 
-  <!-- FIXED ORDER BUTTON -->
   <div class="fixed bottom-0 left-0 right-0 bg-gray-900">
-    <a href="cart_order.html">
-      <button class="w-full py-4 text-white text-sm font-semibold tracking-wide hover:bg-black transition-colors">
-        Order
-      </button>
-    </a>
+    <a id="orderButton" href="cart_order.html" class="block w-full py-4 text-center text-white text-sm font-semibold tracking-wide hover:bg-black transition-colors">Order</a>
   </div>
+
+  <script src="store_data.js"></script>
+  <script>
+    (() => {
+      const store = window.StoreMvp;
+      if (!store) return;
+
+      const {
+        changeItemQty,
+        formatMoney,
+        getCartCount,
+        getCartItems,
+        getSubtotal,
+        readCart,
+        removeItem,
+        setItemQty
+      } = store;
+
+      const cartItemsElement = document.getElementById('cartItems');
+      const emptyCartState = document.getElementById('emptyCartState');
+      const cartSummary = document.getElementById('cartSummary');
+      const summaryProducts = document.getElementById('summaryProducts');
+      const summarySubtotal = document.getElementById('summarySubtotal');
+      const summaryTotal = document.getElementById('summaryTotal');
+      const cartCountBadge = document.getElementById('cartCountBadge');
+      const orderButton = document.getElementById('orderButton');
+
+      let cart = readCart({ withDemo: true });
+
+      const escapeHtml = (value) => {
+        return String(value)
+          .replaceAll('&', '&amp;')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;')
+          .replaceAll('"', '&quot;')
+          .replaceAll("'", '&#39;');
+      };
+
+      const updateBadge = () => {
+        const count = getCartCount(cart);
+        cartCountBadge.textContent = count > 99 ? '99+' : String(count);
+        cartCountBadge.classList.toggle('hidden', count === 0);
+      };
+
+      const updateOrderButton = (hasItems) => {
+        if (hasItems) {
+          orderButton.setAttribute('href', 'cart_order.html');
+          orderButton.classList.remove('pointer-events-none', 'opacity-60');
+          orderButton.removeAttribute('aria-disabled');
+        } else {
+          orderButton.removeAttribute('href');
+          orderButton.classList.add('pointer-events-none', 'opacity-60');
+          orderButton.setAttribute('aria-disabled', 'true');
+        }
+      };
+
+      const renderItems = () => {
+        const items = getCartItems(cart);
+
+        if (items.length === 0) {
+          cartItemsElement.innerHTML = '';
+          emptyCartState.classList.remove('hidden');
+          cartSummary.classList.add('hidden');
+          updateOrderButton(false);
+          updateBadge();
+          return;
+        }
+
+        emptyCartState.classList.add('hidden');
+        cartSummary.classList.remove('hidden');
+        updateOrderButton(true);
+
+        cartItemsElement.innerHTML = items.map(({ product, qty }) => {
+          const lineTotal = formatMoney(product.price * qty);
+
+          return `
+            <article class="py-5 border-b border-gray-100" data-product-id="${escapeHtml(product.id)}">
+              <div class="flex gap-4">
+                <div class="w-24 h-24 rounded-lg bg-gray-100 overflow-hidden">
+                  <img src="${escapeHtml(product.image || '')}" alt="${escapeHtml(product.name)} cover" class="w-full h-full object-cover" loading="lazy"/>
+                </div>
+
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-start justify-between gap-3">
+                    <div>
+                      <p class="text-sm font-semibold leading-tight">${escapeHtml(product.name)}</p>
+                      <p class="text-xs text-gray-400 mt-1">${escapeHtml(product.category)} - ${escapeHtml(product.platform)}</p>
+                    </div>
+                    <button data-remove-id="${escapeHtml(product.id)}" class="w-8 h-8 rounded-full border border-gray-200 text-gray-500 hover:bg-gray-50 hover:border-gray-300 transition-colors" title="Remove product" aria-label="Remove product">X</button>
+                  </div>
+
+                  <p class="text-xs text-gray-400 mt-2 leading-relaxed">${escapeHtml(product.description)}</p>
+
+                  <div class="flex items-center justify-between mt-3">
+                    <p class="text-sm font-semibold">${formatMoney(product.price)}</p>
+                    <p class="text-xs text-gray-500">Line total: <span class="font-semibold text-gray-700">${lineTotal}</span></p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between px-0 py-2.5 mt-2">
+                <span class="text-[10px] tracking-widest uppercase text-gray-400 font-medium">Quantity</span>
+                <div class="flex items-center gap-2">
+                  <button data-dec-id="${escapeHtml(product.id)}" class="w-8 h-8 rounded-full border border-gray-200 text-gray-700 hover:border-gray-400 hover:bg-gray-50 flex items-center justify-center" aria-label="Decrease quantity">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6"/></svg>
+                  </button>
+                  <input data-qty-input-id="${escapeHtml(product.id)}" type="number" min="0" step="1" value="${qty}" class="w-14 h-8 rounded-md border border-gray-200 text-sm font-semibold text-center focus:outline-none focus:border-gray-400" aria-label="Product quantity"/>
+                  <button data-inc-id="${escapeHtml(product.id)}" class="w-8 h-8 rounded-full border border-gray-200 text-gray-700 hover:border-gray-400 hover:bg-gray-50 flex items-center justify-center" aria-label="Increase quantity">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12M18 12H6"/></svg>
+                  </button>
+                </div>
+              </div>
+            </article>
+          `;
+        }).join('');
+
+        const count = getCartCount(cart);
+        const subtotal = getSubtotal(cart);
+
+        summaryProducts.textContent = String(count);
+        summarySubtotal.textContent = formatMoney(subtotal);
+        summaryTotal.textContent = formatMoney(subtotal);
+
+        updateBadge();
+      };
+
+      cartItemsElement.addEventListener('click', (event) => {
+        const incButton = event.target.closest('[data-inc-id]');
+        if (incButton) {
+          cart = changeItemQty(incButton.dataset.incId, 1);
+          renderItems();
+          return;
+        }
+
+        const decButton = event.target.closest('[data-dec-id]');
+        if (decButton) {
+          cart = changeItemQty(decButton.dataset.decId, -1);
+          renderItems();
+          return;
+        }
+
+        const removeButton = event.target.closest('[data-remove-id]');
+        if (removeButton) {
+          cart = removeItem(removeButton.dataset.removeId);
+          renderItems();
+        }
+      });
+
+      cartItemsElement.addEventListener('change', (event) => {
+        const qtyInput = event.target.closest('[data-qty-input-id]');
+        if (!qtyInput) return;
+
+        cart = setItemQty(qtyInput.dataset.qtyInputId, qtyInput.value);
+        renderItems();
+      });
+
+      renderItems();
+    })();
+  </script>
 
 </body>
 </html>

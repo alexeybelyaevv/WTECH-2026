@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>L — Product</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
-    body { font-family: 'DM Sans', sans-serif; }
-    .font-display { font-family: 'Playfair Display', serif; }
+    body { font-family: 'Montserrat', sans-serif; }
+    .font-display { font-family: 'Montserrat', sans-serif; }
     select { -webkit-appearance: none; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' viewBox='0 0 24 24' stroke='%236b7280' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; }
   </style>
 </head>
@@ -31,7 +31,7 @@
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9m12-9l2 9M9 21a1 1 0 100-2 1 1 0 000 2zm6 0a1 1 0 100-2 1 1 0 000 2z"/>
           </svg>
-          <span class="absolute -top-1 -right-1 bg-gray-900 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-medium">2</span>
+          <span id="cartCountBadge" class="hidden absolute -top-1 -right-1 bg-gray-900 text-white text-[10px] min-w-4 h-4 px-1 rounded-full flex items-center justify-center font-medium">0</span>
         </button>
       </a>
     </div>
@@ -43,10 +43,8 @@
 
       <!-- Image -->
       <div class="relative w-full lg:w-[360px] shrink-0">
-        <div class="w-full aspect-square bg-gray-100 rounded-2xl flex items-center justify-center">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="0.8">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-          </svg>
+        <div class="w-full aspect-square bg-gray-100 rounded-2xl overflow-hidden">
+          <img id="detailImage" src="" alt="Product cover" class="w-full h-full object-cover"/>
         </div>
         <button class="absolute top-3 left-3 w-9 h-9 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors" title="Add to favorites">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 text-white" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="1.8">
@@ -58,57 +56,54 @@
       <!-- Info -->
       <div class="flex-1 w-full pt-1 space-y-4 text-center lg:text-left">
         <div class="space-y-2">
-          <h1 class="text-2xl font-bold">Text Heading</h1>
-          <span class="inline-block px-3 py-0.5 rounded-full bg-green-100 text-green-700 text-xs font-medium">Tag</span>
+          <h1 id="detailName" class="text-2xl font-bold">Product Name</h1>
+          <span id="detailCategory" class="inline-block px-3 py-0.5 rounded-full bg-green-100 text-green-700 text-xs font-medium">Category</span>
         </div>
 
         <div class="flex items-baseline gap-1 justify-center lg:justify-start">
-          <span class="text-2xl text-gray-400 font-light">$</span>
-          <span class="text-5xl font-bold tracking-tight">50</span>
+          <span id="detailPrice" class="text-5xl font-bold tracking-tight">$0.00</span>
+          <span id="detailOldPrice" class="text-lg text-gray-400 line-through ml-2"></span>
         </div>
 
-        <p class="text-sm text-gray-500 max-w-2xl mx-auto lg:mx-0">Text</p>
+        <p id="detailDescription" class="text-sm text-gray-500 max-w-2xl mx-auto lg:mx-0">Product description.</p>
 
         <!-- Size + Colour -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">Size</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Platform</label>
             <select class="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm text-gray-600 focus:outline-none focus:border-gray-400 transition-colors pr-8" title="Select size">
-              <option>Value</option>
-              <option>S</option>
-              <option>M</option>
-              <option>L</option>
-              <option>XL</option>
+              <option id="detailPlatformOption">Platform</option>
+              <option>PC / Steam</option>
+              <option>Epic Games</option>
+              <option>Xbox / PC</option>
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">Colour</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Delivery</label>
             <select class="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm text-gray-600 focus:outline-none focus:border-gray-400 transition-colors pr-8" title="Select colour">
-              <option>Value</option>
-              <option>Black</option>
-              <option>White</option>
-              <option>Grey</option>
+              <option>Instant email delivery</option>
+              <option>SMS delivery (+$1.99)</option>
             </select>
           </div>
         </div>
 
         <!-- CTA -->
         <div class="flex flex-col sm:flex-row sm:items-center gap-3">
-          <button class="w-full sm:w-auto sm:px-10 py-3.5 bg-gray-900 text-white text-sm font-semibold rounded-xl hover:bg-black transition-colors">
-            Button
+          <button id="addToCartButton" class="w-full sm:w-auto sm:px-10 py-3.5 bg-gray-900 text-white text-sm font-semibold rounded-xl hover:bg-black transition-colors">
+            Add to cart
           </button>
         </div>
 
         <!-- FAQ accordion -->
         <div class="border border-gray-200 rounded-xl overflow-hidden">
           <div class="flex items-center justify-between px-4 py-3.5 cursor-pointer">
-            <span class="text-sm font-semibold">Title</span>
+            <span class="text-sm font-semibold">How delivery works</span>
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/>
             </svg>
           </div>
           <div class="px-4 pb-4 border-t border-gray-100">
-            <p class="text-sm text-gray-500 mt-3 leading-relaxed">Answer the frequently asked question in a simple sentence, a longish paragraph, or even in a list.</p>
+            <p class="text-sm text-gray-500 mt-3 leading-relaxed">After payment confirmation, your digital code is sent automatically to email. Average delivery time is under 1 minute.</p>
           </div>
         </div>
       </div>
@@ -127,13 +122,13 @@
             <svg class="w-4 h-4 text-gray-300" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
             <svg class="w-4 h-4 text-gray-300" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
           </div>
-          <p class="text-sm font-bold mb-1">Review title</p>
-          <p class="text-sm text-gray-500 mb-4">Review body</p>
+          <p class="text-sm font-bold mb-1">Fast digital delivery</p>
+          <p class="text-sm text-gray-500 mb-4">Activation key was delivered in under one minute and worked instantly.</p>
           <div class="flex items-center gap-2.5">
             <img src="https://i.pravatar.cc/40?img=1" class="w-8 h-8 rounded-full object-cover" alt="avatar"/>
             <div>
-              <p class="text-xs font-medium text-gray-600">Reviewer name</p>
-              <p class="text-xs text-gray-400">Date</p>
+              <p class="text-xs font-medium text-gray-600">Marek T.</p>
+              <p class="text-xs text-gray-400">March 2026</p>
             </div>
           </div>
         </div>
@@ -146,13 +141,13 @@
             <svg class="w-4 h-4 text-gray-300" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
             <svg class="w-4 h-4 text-gray-300" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
           </div>
-          <p class="text-sm font-bold mb-1">Review title</p>
-          <p class="text-sm text-gray-500 mb-4">Review body</p>
+          <p class="text-sm font-bold mb-1">Best price in this week</p>
+          <p class="text-sm text-gray-500 mb-4">Price was lower than other key stores and code activation had no issues.</p>
           <div class="flex items-center gap-2.5">
             <img src="https://i.pravatar.cc/40?img=5" class="w-8 h-8 rounded-full object-cover" alt="avatar"/>
             <div>
-              <p class="text-xs font-medium text-gray-600">Reviewer name</p>
-              <p class="text-xs text-gray-400">Date</p>
+              <p class="text-xs font-medium text-gray-600">Sofia K.</p>
+              <p class="text-xs text-gray-400">March 2026</p>
             </div>
           </div>
         </div>
@@ -165,13 +160,13 @@
             <svg class="w-4 h-4 text-gray-300" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
             <svg class="w-4 h-4 text-gray-300" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
           </div>
-          <p class="text-sm font-bold mb-1">Review title</p>
-          <p class="text-sm text-gray-500 mb-4">Review body</p>
+          <p class="text-sm font-bold mb-1">Will buy again</p>
+          <p class="text-sm text-gray-500 mb-4">Smooth checkout, clear instructions, and instant confirmation email.</p>
           <div class="flex items-center gap-2.5">
             <img src="https://i.pravatar.cc/40?img=9" class="w-8 h-8 rounded-full object-cover" alt="avatar"/>
             <div>
-              <p class="text-xs font-medium text-gray-600">Reviewer name</p>
-              <p class="text-xs text-gray-400">Date</p>
+              <p class="text-xs font-medium text-gray-600">Daniel R.</p>
+              <p class="text-xs text-gray-400">March 2026</p>
             </div>
           </div>
         </div>
@@ -180,5 +175,59 @@
     </div>
   </div>
 
+  <script src="store_data.js"></script>
+  <script>
+    (() => {
+      const store = window.StoreMvp;
+      if (!store) return;
+
+      const params = new URLSearchParams(window.location.search);
+      const requestedId = params.get('id');
+      const product = store.CATALOG.find((item) => item.id === requestedId) || store.CATALOG[0];
+
+      const detailName = document.getElementById('detailName');
+      const detailCategory = document.getElementById('detailCategory');
+      const detailPrice = document.getElementById('detailPrice');
+      const detailOldPrice = document.getElementById('detailOldPrice');
+      const detailDescription = document.getElementById('detailDescription');
+      const detailImage = document.getElementById('detailImage');
+      const detailPlatformOption = document.getElementById('detailPlatformOption');
+      const addToCartButton = document.getElementById('addToCartButton');
+      const cartCountBadge = document.getElementById('cartCountBadge');
+
+      const escapeText = (value) => String(value || '');
+
+      const updateBadge = () => {
+        const count = store.getCartCount(store.readCart());
+        cartCountBadge.textContent = count > 99 ? '99+' : String(count);
+        cartCountBadge.classList.toggle('hidden', count === 0);
+      };
+
+      document.title = `L - ${escapeText(product.name)}`;
+      detailName.textContent = escapeText(product.name);
+      detailCategory.textContent = escapeText(product.category);
+      detailPrice.textContent = store.formatMoney(product.price);
+      detailOldPrice.textContent = product.oldPrice > product.price ? store.formatMoney(product.oldPrice) : '';
+      detailDescription.textContent = escapeText(product.description);
+      detailImage.src = escapeText(product.image);
+      detailImage.alt = `${escapeText(product.name)} cover`;
+      detailPlatformOption.textContent = escapeText(product.platform);
+
+      addToCartButton?.addEventListener('click', () => {
+        store.addItem(product.id, 1);
+        updateBadge();
+        const previous = addToCartButton.textContent;
+        addToCartButton.textContent = 'Added';
+        addToCartButton.disabled = true;
+        window.setTimeout(() => {
+          addToCartButton.textContent = previous;
+          addToCartButton.disabled = false;
+        }, 700);
+      });
+
+      window.addEventListener('cart:updated', updateBadge);
+      updateBadge();
+    })();
+  </script>
 </body>
 </html>
