@@ -11,6 +11,7 @@ use App\Models\Category;
 use App\Models\Platform;
 use App\Models\Product;
 use App\Models\ProductImage;
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
@@ -22,14 +23,34 @@ use Illuminate\Validation\ValidationException;
 
 class AdminProductController extends Controller
 {
-    public function index(): AnonymousResourceCollection
+    public function index(Request $request): AnonymousResourceCollection
     {
-        $products = Product::query()
+        $query = Product::query()
             ->with(['images', 'categories', 'platforms'])
-            ->orderByDesc('created_at')
-            ->paginate(20);
+            ->orderByDesc('created_at');
+
+        if ($request->filled('q')) {
+            $operator = $query->getConnection()->getDriverName() === 'pgsql' ? 'ILIKE' : 'LIKE';
+            $needle = '%'.trim((string) $request->input('q')).'%';
+
+            $query->where(function ($productQuery) use ($needle, $operator): void {
+                $productQuery
+                    ->where('name', $operator, $needle)
+                    ->orWhere('description', $operator, $needle)
+                    ->orWhere('slug', $operator, $needle);
+            });
+        }
+
+        $products = $query
+            ->paginate((int) $request->integer('per_page', 20))
+            ->withQueryString();
 
         return ProductListResource::collection($products);
+    }
+
+    public function show(Product $product): ProductDetailResource
+    {
+        return new ProductDetailResource($product->load(['images', 'categories', 'platforms']));
     }
 
     public function references(): JsonResponse
@@ -226,4 +247,3 @@ class AdminProductController extends Controller
         return $candidate;
     }
 }
-

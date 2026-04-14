@@ -11,6 +11,7 @@ Route::redirect('/', '/index.html');
 Route::prefix('api/auth')
     ->withoutMiddleware([VerifyCsrfToken::class])
     ->group(function () {
+        Route::get('/csrf-token', [AuthController::class, 'csrfToken']);
         Route::get('/me', [AuthController::class, 'me']);
         Route::post('/register', [AuthController::class, 'register']);
         Route::post('/login', [AuthController::class, 'login']);
@@ -26,8 +27,15 @@ Route::get('/auth_ui.js', [FrontendController::class, 'asset'])
 Route::get('/styles.css', [FrontendController::class, 'asset'])
     ->defaults('asset', 'styles.css');
 
+Route::middleware(['auth', 'admin'])->group(function () {
+    foreach (FrontendController::ADMIN_PAGES as $page) {
+        Route::get("/{$page}.html", [FrontendController::class, 'page'])
+            ->defaults('page', $page);
+    }
+});
+
 Route::get('/{page}.html', [FrontendController::class, 'page'])
-    ->where('page', implode('|', FrontendController::PAGES));
+    ->where('page', implode('|', FrontendController::PUBLIC_PAGES));
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -19,6 +19,15 @@ class CatalogProductController extends Controller
             ->active()
             ->with(['images', 'categories', 'platforms']);
 
+        $ids = collect($request->validated('ids', []))
+            ->map(fn ($id) => (int) $id)
+            ->filter(fn (int $id) => $id > 0)
+            ->values();
+
+        if ($ids->isNotEmpty()) {
+            $query->whereIn('id', $ids);
+        }
+
         if ($request->filled('type')) {
             $query->where('type', $request->string('type'));
         }
@@ -112,4 +121,3 @@ class CatalogProductController extends Controller
             ->values();
     }
 }
-

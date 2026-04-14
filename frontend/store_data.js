@@ -1,134 +1,45 @@
 (function () {
-  const CATALOG = [
-    {
-      id: "steam_elden_ring",
-      name: "Elden Ring (Steam Key)",
-      category: "Game Key",
-      platform: "PC / Steam",
-      description: "Global key. Instant delivery to email.",
-      price: 39.99,
-      oldPrice: 59.99,
-      rating: 4.9,
-      tag: "Top Seller",
-      thumb: "ER",
-      image: "https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg"
-    },
-    {
-      id: "steam_cyberpunk_2077",
-      name: "Cyberpunk 2077 Ultimate (Steam Key)",
-      category: "Game Key",
-      platform: "PC / Steam",
-      description: "Includes base game + Phantom Liberty.",
-      price: 44.99,
-      oldPrice: 79.99,
-      rating: 4.7,
-      tag: "-44%",
-      thumb: "CP77",
-      image: "https://cdn.akamai.steamstatic.com/steam/apps/1091500/header.jpg"
-    },
-    {
-      id: "rockstar_gta_v_premium",
-      name: "GTA V Premium Online Edition",
-      category: "Game Key",
-      platform: "PC / Rockstar",
-      description: "Activation key for Rockstar launcher.",
-      price: 13.49,
-      oldPrice: 29.99,
-      rating: 4.8,
-      tag: "Budget",
-      thumb: "GTA",
-      image: "https://cdn.akamai.steamstatic.com/steam/apps/271590/header.jpg"
-    },
-    {
-      id: "gamepass_ultimate_3m",
-      name: "Xbox Game Pass Ultimate 3 Months",
-      category: "Subscription",
-      platform: "Xbox / PC",
-      description: "Region free trial-safe code. Auto delivery.",
-      price: 27.99,
-      oldPrice: 39.99,
-      rating: 4.8,
-      tag: "Subscription",
-      thumb: "XGP",
-      image: "https://cdn.akamai.steamstatic.com/steam/apps/1716740/header.jpg"
-    },
-    {
-      id: "wow_60_days",
-      name: "World of Warcraft 60 Days Time Card",
-      category: "Subscription",
-      platform: "Battle.net",
-      description: "Adds 60 days of active game time.",
-      price: 24.99,
-      oldPrice: 29.99,
-      rating: 4.6,
-      tag: "MMO",
-      thumb: "WOW",
-      image: "https://cdn.akamai.steamstatic.com/steam/apps/2344520/header.jpg"
-    },
-    {
-      id: "ea_play_pro_1m",
-      name: "EA Play Pro 1 Month",
-      category: "Subscription",
-      platform: "EA app",
-      description: "Full access to EA premium catalog.",
-      price: 14.99,
-      oldPrice: 16.99,
-      rating: 4.4,
-      tag: "EA",
-      thumb: "EA",
-      image: "https://cdn.akamai.steamstatic.com/steam/apps/2195250/header.jpg"
-    },
-    {
-      id: "fortnite_2800_vbucks",
-      name: "Fortnite 2,800 V-Bucks",
-      category: "In-game Currency",
-      platform: "Epic Games",
-      description: "Digital code for your Epic account.",
-      price: 21.99,
-      oldPrice: 24.99,
-      rating: 4.9,
-      tag: "Currency",
-      thumb: "VB",
-      image: "https://cdn.akamai.steamstatic.com/steam/apps/1172470/header.jpg"
-    },
-    {
-      id: "valorant_2050_vp",
-      name: "Valorant 2,050 VP",
-      category: "In-game Currency",
-      platform: "Riot",
-      description: "Top up points for skins and battle pass.",
-      price: 19.99,
-      oldPrice: 21.99,
-      rating: 4.8,
-      tag: "Riot",
-      thumb: "VP",
-      image: "https://cdn.akamai.steamstatic.com/steam/apps/730/header.jpg"
-    },
-    {
-      id: "steam_wallet_50",
-      name: "Steam Wallet Gift Card $50",
-      category: "In-game Currency",
-      platform: "Steam",
-      description: "US wallet top-up code for Steam account.",
-      price: 50.0,
-      oldPrice: 50.0,
-      rating: 4.9,
-      tag: "Gift Card",
-      thumb: "$50",
-      image: "https://cdn.akamai.steamstatic.com/steam/apps/753/header.jpg"
-    }
-  ];
+  const CART_KEY = "l_store_cart_v2";
+  const DEFAULT_CURRENCY = "EUR";
+  const DEFAULT_LOCALE = "en-IE";
 
-  const CATALOG_MAP = CATALOG.reduce((map, product) => {
-    map[product.id] = product;
-    return map;
-  }, {});
+  let csrfTokenPromise = null;
 
-  const CART_KEY = "l_store_cart_v1";
-  const DEMO_CART = {
-    steam_elden_ring: 1,
-    gamepass_ultimate_3m: 1,
-    fortnite_2800_vbucks: 2
+  const escapeHtml = (value) => {
+    return String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
+  };
+
+  const encodeSvg = (svg) => `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+
+  const placeholderImage = (label = "Product") => {
+    const safeLabel = escapeHtml(label).slice(0, 40);
+
+    return encodeSvg(`
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480">
+        <defs>
+          <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#f3f4f6" />
+            <stop offset="100%" stop-color="#e5e7eb" />
+          </linearGradient>
+        </defs>
+        <rect width="640" height="480" fill="url(#bg)" />
+        <circle cx="320" cy="188" r="54" fill="#d1d5db" />
+        <path d="M128 376l108-112 72 72 52-52 152 92H128z" fill="#cbd5e1" />
+        <text x="320" y="432" text-anchor="middle" fill="#6b7280" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600">${safeLabel}</text>
+      </svg>
+    `);
+  };
+
+  const isPlainObject = (value) => value && typeof value === "object" && !Array.isArray(value);
+
+  const normalizeProductId = (productId) => {
+    const normalized = String(productId ?? "").trim();
+    return normalized === "" ? null : normalized;
   };
 
   const clampToQty = (value) => {
@@ -138,12 +49,14 @@
   };
 
   const sanitizeCart = (cartLike) => {
-    const source = cartLike && typeof cartLike === "object" ? cartLike : {};
+    const source = isPlainObject(cartLike) ? cartLike : {};
     const clean = {};
 
-    for (const [productId, qty] of Object.entries(source)) {
+    for (const [rawProductId, qty] of Object.entries(source)) {
+      const productId = normalizeProductId(rawProductId);
       const safeQty = clampToQty(qty);
-      if (safeQty > 0 && CATALOG_MAP[productId]) {
+
+      if (productId && safeQty > 0) {
         clean[productId] = safeQty;
       }
     }
@@ -151,23 +64,13 @@
     return clean;
   };
 
-  const readCart = (options = {}) => {
-    const { withDemo = false } = options;
-
+  const readCart = () => {
     try {
       const raw = window.localStorage.getItem(CART_KEY);
-      const hasStoredValue = raw !== null;
       const parsed = raw ? JSON.parse(raw) : {};
-      let cart = sanitizeCart(parsed);
-
-      if (withDemo && !hasStoredValue && Object.keys(cart).length === 0) {
-        cart = { ...DEMO_CART };
-        window.localStorage.setItem(CART_KEY, JSON.stringify(cart));
-      }
-
-      return cart;
-    } catch (_) {
-      return withDemo ? { ...DEMO_CART } : {};
+      return sanitizeCart(parsed);
+    } catch (_error) {
+      return {};
     }
   };
 
@@ -176,100 +79,374 @@
 
     try {
       window.localStorage.setItem(CART_KEY, JSON.stringify(cart));
-    } catch (_) {
+    } catch (_error) {
       return cart;
     }
 
     window.dispatchEvent(
       new CustomEvent("cart:updated", {
-        detail: { cart }
-      })
+        detail: { cart },
+      }),
     );
 
     return cart;
   };
 
   const setItemQty = (productId, qty) => {
-    const cart = readCart();
+    const normalizedId = normalizeProductId(productId);
     const nextQty = clampToQty(qty);
+    const cart = readCart();
 
-    if (!CATALOG_MAP[productId] || nextQty <= 0) {
-      delete cart[productId];
-    } else {
-      cart[productId] = nextQty;
+    if (!normalizedId || nextQty <= 0) {
+      if (normalizedId) {
+        delete cart[normalizedId];
+      }
+
+      return writeCart(cart);
     }
 
+    cart[normalizedId] = nextQty;
     return writeCart(cart);
   };
 
   const addItem = (productId, delta = 1) => {
-    const cart = readCart();
+    const normalizedId = normalizeProductId(productId);
     const safeDelta = clampToQty(delta);
-    const current = clampToQty(cart[productId]);
 
-    if (!CATALOG_MAP[productId] || safeDelta <= 0) {
-      return cart;
+    if (!normalizedId || safeDelta <= 0) {
+      return readCart();
     }
 
-    cart[productId] = current + safeDelta;
+    const cart = readCart();
+    const current = clampToQty(cart[normalizedId]);
+    cart[normalizedId] = current + safeDelta;
+
     return writeCart(cart);
   };
 
   const changeItemQty = (productId, delta = 0) => {
-    const cart = readCart();
-    const current = clampToQty(cart[productId]);
+    const normalizedId = normalizeProductId(productId);
+    const current = clampToQty(readCart()[normalizedId]);
     const next = current + Number.parseInt(delta, 10);
 
-    return setItemQty(productId, next);
+    return setItemQty(normalizedId, next);
   };
 
   const removeItem = (productId) => {
     return setItemQty(productId, 0);
   };
 
-  const getCartItems = (cartLike) => {
+  const getCartEntries = (cartLike) => {
     const cart = sanitizeCart(cartLike);
 
-    return Object.entries(cart)
-      .filter(([productId]) => Boolean(CATALOG_MAP[productId]))
-      .map(([productId, qty]) => {
-        return {
-          product: CATALOG_MAP[productId],
-          qty
-        };
-      });
+    return Object.entries(cart).map(([productId, qty]) => ({
+      productId,
+      quantity: qty,
+    }));
   };
 
   const getCartCount = (cartLike) => {
-    return getCartItems(cartLike).reduce((total, item) => total + item.qty, 0);
+    return getCartEntries(cartLike).reduce((total, entry) => total + entry.quantity, 0);
   };
 
-  const getSubtotal = (cartLike) => {
-    return getCartItems(cartLike).reduce((total, item) => {
-      return total + item.product.price * item.qty;
-    }, 0);
-  };
-
-  const formatMoney = (value) => {
-    return new Intl.NumberFormat("en-US", {
+  const formatMoney = (value, currency = DEFAULT_CURRENCY) => {
+    return new Intl.NumberFormat(DEFAULT_LOCALE, {
       style: "currency",
-      currency: "USD"
-    }).format(value);
+      currency: currency || DEFAULT_CURRENCY,
+    }).format(Number(value) || 0);
+  };
+
+  const productImage = (product, fallbackLabel = "Product") => {
+    if (!product || typeof product !== "object") {
+      return placeholderImage(fallbackLabel);
+    }
+
+    const candidate =
+      product.preview_image_url ||
+      product.preview_image ||
+      product.image ||
+      product.url ||
+      product.path ||
+      product.images?.[0]?.url ||
+      product.images?.[0]?.path ||
+      null;
+
+    if (!candidate) {
+      return placeholderImage(product.name || fallbackLabel);
+    }
+
+    if (/^https?:\/\//i.test(candidate) || candidate.startsWith("data:")) {
+      return candidate;
+    }
+
+    if (candidate.startsWith("/")) {
+      return candidate;
+    }
+
+    return `/storage/${candidate.replace(/^\/+/, "")}`;
+  };
+
+  const productCategoryLabel = (product) => {
+    return product?.categories?.[0]?.name || "Uncategorized";
+  };
+
+  const productPlatformLabel = (product) => {
+    if (!Array.isArray(product?.platforms) || product.platforms.length === 0) {
+      return "Platform not specified";
+    }
+
+    return product.platforms.map((platform) => platform.name).join(", ");
+  };
+
+  const toQueryString = (params = {}) => {
+    const searchParams = new URLSearchParams();
+
+    Object.entries(params).forEach(([key, value]) => {
+      if (value === null || value === undefined || value === "") {
+        return;
+      }
+
+      if (Array.isArray(value)) {
+        value.forEach((item) => {
+          if (item !== null && item !== undefined && item !== "") {
+            searchParams.append(`${key}[]`, String(item));
+          }
+        });
+
+        return;
+      }
+
+      searchParams.append(key, String(value));
+    });
+
+    return searchParams.toString();
+  };
+
+  const createHttpError = (response, payload) => {
+    const error = new Error(
+      payload?.message ||
+        (response.status === 401
+          ? "Authentication required."
+          : response.status === 403
+            ? "You do not have access to this action."
+            : response.status === 404
+              ? "Requested resource was not found."
+              : "Request failed."),
+    );
+
+    error.status = response.status;
+    error.payload = payload;
+
+    return error;
+  };
+
+  const requestJson = async (url, options = {}) => {
+    const { headers = {}, body, ...rest } = options;
+    const finalHeaders = {
+      Accept: "application/json",
+      ...headers,
+    };
+
+    const isFormData = body instanceof FormData;
+    if (body !== undefined && !isFormData && !finalHeaders["Content-Type"]) {
+      finalHeaders["Content-Type"] = "application/json";
+    }
+
+    const response = await fetch(url, {
+      credentials: "same-origin",
+      ...rest,
+      headers: finalHeaders,
+      body,
+    });
+
+    if (response.status === 204) {
+      return null;
+    }
+
+    const contentType = response.headers.get("content-type") || "";
+    const payload = contentType.includes("application/json")
+      ? await response.json().catch(() => ({}))
+      : await response.text().catch(() => "");
+
+    if (!response.ok) {
+      throw createHttpError(response, payload);
+    }
+
+    return payload;
+  };
+
+  const ensureCsrfToken = async () => {
+    if (!csrfTokenPromise) {
+      csrfTokenPromise = requestJson("/api/auth/csrf-token").then((payload) => payload?.token || "");
+    }
+
+    return csrfTokenPromise;
+  };
+
+  const requestWithCsrf = async (url, options = {}) => {
+    const token = await ensureCsrfToken();
+    const headers = {
+      ...(options.headers || {}),
+      "X-CSRF-TOKEN": token,
+    };
+
+    return requestJson(url, {
+      ...options,
+      headers,
+    });
+  };
+
+  const firstError = (payload, fallback = "Request failed.") => {
+    if (payload && typeof payload.message === "string" && !payload.errors) {
+      return payload.message;
+    }
+
+    if (!payload || typeof payload !== "object" || !payload.errors) {
+      return fallback;
+    }
+
+    for (const value of Object.values(payload.errors)) {
+      if (Array.isArray(value) && value.length > 0) {
+        return value[0];
+      }
+    }
+
+    return payload.message || fallback;
+  };
+
+  const fetchCatalogProducts = async (params = {}) => {
+    const query = toQueryString(params);
+    const url = query ? `/api/products?${query}` : "/api/products";
+
+    return requestJson(url);
+  };
+
+  const fetchCatalogProduct = async (slug) => {
+    return requestJson(`/api/products/${encodeURIComponent(slug)}`);
+  };
+
+  const fetchCatalogProductsByIds = async (ids) => {
+    const normalizedIds = Array.from(
+      new Set(
+        (Array.isArray(ids) ? ids : [])
+          .map((id) => Number.parseInt(id, 10))
+          .filter((id) => Number.isInteger(id) && id > 0),
+      ),
+    );
+
+    if (normalizedIds.length === 0) {
+      return [];
+    }
+
+    const payload = await fetchCatalogProducts({
+      ids: normalizedIds,
+      per_page: Math.min(Math.max(normalizedIds.length, 1), 48),
+    });
+
+    return Array.isArray(payload?.data) ? payload.data : [];
+  };
+
+  const fetchCheckoutOptions = async () => {
+    return requestJson("/api/checkout/options");
+  };
+
+  const placeOrder = async (payload) => {
+    return requestJson("/api/orders", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  };
+
+  const fetchOrder = async (orderNumber) => {
+    return requestJson(`/api/orders/${encodeURIComponent(orderNumber)}`);
+  };
+
+  const fetchAdminReferences = async () => {
+    return requestJson("/api/admin/references");
+  };
+
+  const fetchAdminProducts = async (params = {}) => {
+    const query = toQueryString(params);
+    const url = query ? `/api/admin/products?${query}` : "/api/admin/products";
+
+    return requestJson(url);
+  };
+
+  const fetchAdminProduct = async (productId) => {
+    return requestJson(`/api/admin/products/${encodeURIComponent(productId)}`);
+  };
+
+  const createAdminProduct = async (formData) => {
+    return requestWithCsrf("/api/admin/products", {
+      method: "POST",
+      body: formData,
+    });
+  };
+
+  const updateAdminProduct = async (productId, formData) => {
+    formData.append("_method", "PUT");
+
+    return requestWithCsrf(`/api/admin/products/${encodeURIComponent(productId)}`, {
+      method: "POST",
+      body: formData,
+    });
+  };
+
+  const deleteAdminProduct = async (productId) => {
+    const formData = new FormData();
+    formData.append("_method", "DELETE");
+
+    return requestWithCsrf(`/api/admin/products/${encodeURIComponent(productId)}`, {
+      method: "POST",
+      body: formData,
+    });
+  };
+
+  const deleteAdminProductImage = async (productId, imageId) => {
+    const formData = new FormData();
+    formData.append("_method", "DELETE");
+
+    return requestWithCsrf(
+      `/api/admin/products/${encodeURIComponent(productId)}/images/${encodeURIComponent(imageId)}`,
+      {
+        method: "POST",
+        body: formData,
+      },
+    );
   };
 
   window.StoreMvp = {
-    CATALOG,
     CART_KEY,
-    DEMO_CART,
-    readCart,
-    writeCart,
     addItem,
-    setItemQty,
     changeItemQty,
-    removeItem,
-    getCartItems,
+    createAdminProduct,
+    deleteAdminProduct,
+    deleteAdminProductImage,
+    ensureCsrfToken,
+    escapeHtml,
+    fetchAdminProduct,
+    fetchAdminProducts,
+    fetchAdminReferences,
+    fetchCatalogProduct,
+    fetchCatalogProducts,
+    fetchCatalogProductsByIds,
+    fetchCheckoutOptions,
+    fetchOrder,
+    firstError,
+    formatMoney,
     getCartCount,
-    getSubtotal,
-    formatMoney
+    getCartEntries,
+    placeholderImage,
+    placeOrder,
+    productCategoryLabel,
+    productImage,
+    productPlatformLabel,
+    readCart,
+    removeItem,
+    requestJson,
+    requestWithCsrf,
+    setItemQty,
+    updateAdminProduct,
+    writeCart,
   };
 })();

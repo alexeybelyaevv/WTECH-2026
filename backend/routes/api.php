@@ -23,6 +23,7 @@ Route::prefix('admin')->middleware(['web', 'auth', 'admin'])->group(function () 
 
     Route::prefix('products')->group(function () {
         Route::get('/', [AdminProductController::class, 'index']);
+        Route::get('/{product}', [AdminProductController::class, 'show']);
         Route::post('/', [AdminProductController::class, 'store']);
         Route::put('/{product}', [AdminProductController::class, 'update']);
         Route::delete('/{product}', [AdminProductController::class, 'destroy']);

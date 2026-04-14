@@ -2,10 +2,14 @@
 
 namespace Tests\Feature\Frontend;
 
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class FrontendPagesTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function test_root_redirects_to_storefront(): void
     {
         $response = $this->get('/');
@@ -38,5 +42,36 @@ class FrontendPagesTest extends TestCase
         $response
             ->assertOk()
             ->assertSee('Logout');
+    }
+
+    public function test_admin_pages_require_authentication(): void
+    {
+        $response = $this->get('/admin_manage.html');
+
+        $response->assertRedirect('/login');
+    }
+
+    public function test_admin_pages_reject_non_admin_users(): void
+    {
+        $user = User::factory()->create([
+            'role' => User::ROLE_CUSTOMER,
+        ]);
+
+        $response = $this->actingAs($user)->get('/admin_manage.html');
+
+        $response->assertForbidden();
+    }
+
+    public function test_admin_pages_can_be_rendered_for_admins(): void
+    {
+        $admin = User::factory()->create([
+            'role' => User::ROLE_ADMIN,
+        ]);
+
+        $response = $this->actingAs($admin)->get('/admin_manage.html');
+
+        $response
+            ->assertOk()
+            ->assertSee('Product management');
     }
 }

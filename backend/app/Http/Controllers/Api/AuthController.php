@@ -13,6 +13,15 @@ use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
+    public function csrfToken(Request $request): JsonResponse
+    {
+        $request->session();
+
+        return response()->json([
+            'token' => csrf_token(),
+        ]);
+    }
+
     public function me(Request $request): JsonResponse
     {
         $user = $request->user();

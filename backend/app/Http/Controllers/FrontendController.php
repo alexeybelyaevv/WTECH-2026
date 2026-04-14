@@ -6,6 +6,23 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class FrontendController extends Controller
 {
+    public const PUBLIC_PAGES = [
+        'index',
+        'shop',
+        'cart',
+        'cart_order',
+        'cart_success',
+        'product_details',
+        'login',
+        'register',
+    ];
+
+    public const ADMIN_PAGES = [
+        'admin_manage',
+        'admin_new',
+        'admin_edit',
+    ];
+
     public const PAGES = [
         'index',
         'shop',
