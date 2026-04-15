@@ -1,72 +1,241 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>L — Sign In</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-  <style>
-    body { font-family: 'Montserrat', sans-serif; }
-  </style>
-</head>
-<body class="bg-white text-gray-900 antialiased min-h-screen flex items-center justify-center px-4">
-
-  <div class="w-full max-w-sm">
-    <h1 class="text-2xl font-bold text-center mb-8">Welcome Back!</h1>
-
-    <div class="space-y-4">
-      <!-- Email -->
-      <div>
-        <label class="block text-sm text-gray-600 mb-1.5">Email</label>
-        <input
-          type="email"
-          placeholder="example@gmail.com"
-          class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm placeholder-gray-300 focus:outline-none focus:border-gray-400 transition-colors"
-        />
-      </div>
-
-      <!-- Password -->
-      <div>
-        <label class="block text-sm text-gray-600 mb-1.5">Password</label>
-        <div class="relative">
-          <input
-            type="password"
-            placeholder="Enter Your Password"
-            class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm placeholder-gray-300 focus:outline-none focus:border-gray-400 transition-colors pr-11"
-          />
-          <button class="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors" title="Show password">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-              <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      <!-- Remember + Forgot -->
-      <div class="flex items-center justify-between pt-1">
-        <label class="flex items-center gap-2 cursor-pointer">
-          <input type="checkbox" checked class="w-4 h-4 accent-gray-900 rounded"/>
-          <span class="text-sm text-gray-700">Remember Me</span>
-        </label>
-        <a href="#" class="text-sm text-red-400 hover:text-red-500 transition-colors">Forgot Password?</a>
-      </div>
-
-      <!-- Login button -->
-      <a href="index.html">
-        <button class="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition-colors mt-2">
-          Login
-        </button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>L - Sign In</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Montserrat", sans-serif;
+      }
+    </style>
+  </head>
+  <body
+    class="min-h-screen bg-white px-4 text-gray-900 antialiased flex items-center justify-center"
+  >
+    <main class="w-full max-w-sm">
+      <a href="/index.html" class="inline-flex text-sm text-gray-500 hover:text-gray-900 transition-colors">
+        Back to store
       </a>
 
-      <!-- Sign Up link -->
-      <p class="text-center text-sm text-gray-500 pt-1">
-        Don't have an account ?
-        <a href="register.html" class="text-blue-600 hover:text-blue-700 font-medium transition-colors">Sign Up</a>
-      </p>
-    </div>
-  </div>
+      <h1 class="mt-6 mb-8 text-center text-2xl font-bold">Welcome Back!</h1>
 
-</body>
+      <form id="loginForm" class="space-y-4">
+        <div
+          id="formMessage"
+          class="hidden rounded-xl border px-4 py-3 text-sm"
+          role="alert"
+        ></div>
+
+        <div>
+          <label for="emailInput" class="mb-1.5 block text-sm text-gray-600">Email</label>
+          <input
+            id="emailInput"
+            name="email"
+            type="email"
+            placeholder="example@gmail.com"
+            autocomplete="email"
+            required
+            class="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm placeholder-gray-300 transition-colors focus:border-gray-400 focus:outline-none"
+          />
+        </div>
+
+        <div>
+          <label for="passwordInput" class="mb-1.5 block text-sm text-gray-600">Password</label>
+          <div class="relative">
+            <input
+              id="passwordInput"
+              name="password"
+              type="password"
+              placeholder="Enter your password"
+              autocomplete="current-password"
+              required
+              class="w-full rounded-xl border border-gray-200 px-4 py-3 pr-11 text-sm placeholder-gray-300 transition-colors focus:border-gray-400 focus:outline-none"
+            />
+            <button
+              id="togglePasswordButton"
+              type="button"
+              class="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 transition-colors hover:text-gray-600"
+              title="Show password"
+              aria-label="Show password"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="1.8"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-1">
+          <label class="flex cursor-pointer items-center gap-2">
+            <input
+              id="rememberInput"
+              name="remember"
+              type="checkbox"
+              class="h-4 w-4 rounded accent-gray-900"
+            />
+            <span class="text-sm text-gray-700">Remember Me</span>
+          </label>
+          <span class="text-sm text-gray-400">Session auth enabled</span>
+        </div>
+
+        <button
+          id="submitButton"
+          type="submit"
+          class="mt-2 w-full rounded-xl bg-blue-600 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
+        >
+          Login
+        </button>
+
+        <p class="pt-1 text-center text-sm text-gray-500">
+          Don't have an account?
+          <a
+            href="/register.html"
+            class="font-medium text-blue-600 transition-colors hover:text-blue-700"
+            >Sign Up</a
+          >
+        </p>
+      </form>
+    </main>
+
+    <script>
+      (() => {
+        const form = document.getElementById("loginForm");
+        const emailInput = document.getElementById("emailInput");
+        const passwordInput = document.getElementById("passwordInput");
+        const rememberInput = document.getElementById("rememberInput");
+        const submitButton = document.getElementById("submitButton");
+        const formMessage = document.getElementById("formMessage");
+        const togglePasswordButton = document.getElementById("togglePasswordButton");
+
+        const setMessage = (text, type = "error") => {
+          formMessage.textContent = text;
+          formMessage.className =
+            type === "success"
+              ? "rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800"
+              : "rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700";
+          formMessage.classList.remove("hidden");
+        };
+
+        const clearMessage = () => {
+          formMessage.textContent = "";
+          formMessage.className = "hidden rounded-xl border px-4 py-3 text-sm";
+        };
+
+        const firstError = (payload) => {
+          if (payload && typeof payload.message === "string" && !payload.errors) {
+            return payload.message;
+          }
+
+          if (!payload || typeof payload !== "object" || !payload.errors) {
+            return "Unable to sign in right now.";
+          }
+
+          for (const value of Object.values(payload.errors)) {
+            if (Array.isArray(value) && value.length > 0) {
+              return value[0];
+            }
+          }
+
+          return payload.message || "Unable to sign in right now.";
+        };
+
+        const setLoading = (isLoading) => {
+          submitButton.disabled = isLoading;
+          submitButton.textContent = isLoading ? "Signing in..." : "Login";
+        };
+
+        togglePasswordButton.addEventListener("click", () => {
+          const isHidden = passwordInput.type === "password";
+          passwordInput.type = isHidden ? "text" : "password";
+          togglePasswordButton.title = isHidden ? "Hide password" : "Show password";
+          togglePasswordButton.setAttribute("aria-label", togglePasswordButton.title);
+        });
+
+        const redirectIfAuthenticated = async () => {
+          try {
+            const response = await fetch("/api/auth/me", {
+              headers: {
+                Accept: "application/json",
+              },
+              credentials: "same-origin",
+            });
+
+            if (!response.ok) {
+              return;
+            }
+
+            const payload = await response.json();
+            if (payload.authenticated) {
+              window.location.replace("/index.html");
+            }
+          } catch (_error) {
+            // Ignore background auth check failures.
+          }
+        };
+
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          clearMessage();
+          setLoading(true);
+
+          try {
+            const response = await fetch("/api/auth/login", {
+              method: "POST",
+              credentials: "same-origin",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+              body: JSON.stringify({
+                email: emailInput.value.trim(),
+                password: passwordInput.value,
+                remember: rememberInput.checked,
+              }),
+            });
+
+            const payload = await response.json().catch(() => ({}));
+
+            if (!response.ok) {
+              setMessage(firstError(payload));
+              return;
+            }
+
+            setMessage(payload.message || "Signed in successfully.", "success");
+
+            window.setTimeout(() => {
+              window.location.assign(payload.redirect_to || "/index.html");
+            }, 450);
+          } catch (_error) {
+            setMessage("Server is unavailable. Start Laravel and try again.");
+          } finally {
+            setLoading(false);
+          }
+        });
+
+        redirectIfAuthenticated();
+      })();
+    </script>
+  </body>
 </html>

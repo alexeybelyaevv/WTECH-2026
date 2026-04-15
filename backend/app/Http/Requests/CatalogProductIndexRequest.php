@@ -24,6 +24,8 @@ class CatalogProductIndexRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'ids' => ['nullable', 'array'],
+            'ids.*' => ['integer', 'min:1'],
             'q' => ['nullable', 'string', 'max:120'],
             'type' => ['nullable', Rule::in([Product::TYPE_DIGITAL, Product::TYPE_PHYSICAL])],
             'min_price' => ['nullable', 'numeric', 'min:0'],
@@ -38,4 +40,3 @@ class CatalogProductIndexRequest extends FormRequest
         ];
     }
 }
-

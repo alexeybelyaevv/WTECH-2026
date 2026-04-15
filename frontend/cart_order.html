@@ -1,356 +1,526 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>L - Checkout</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-  <style>
-    body { font-family: 'Montserrat', sans-serif; }
-    .font-display { font-family: 'Montserrat', sans-serif; }
-  </style>
-</head>
-<body class="bg-white text-gray-900 antialiased">
-
-  <nav class="flex items-center justify-between px-8 py-4 border-b border-gray-100 sticky top-0 bg-white/90 backdrop-blur z-50">
-    <span class="text-2xl font-display font-bold tracking-tight">
-      <a href="index.html">L</a>
-    </span>
-    <div class="flex items-center gap-3">
-      <a href="login.html" title="Sign in">
-        <button class="px-4 py-1.5 text-sm rounded border border-gray-300 hover:border-gray-700 transition-colors">Sign in</button>
-      </a>
-      <a href="register.html" title="Register">
-        <button class="px-4 py-1.5 text-sm rounded bg-gray-900 text-white hover:bg-black transition-colors">Register</button>
-      </a>
-      <a href="cart.html" title="Cart">
-        <button class="relative ml-1 p-1.5 rounded hover:bg-gray-100 transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9m12-9l2 9M9 21a1 1 0 100-2 1 1 0 000 2zm6 0a1 1 0 100-2 1 1 0 000 2z"/>
-          </svg>
-          <span id="cartCountBadge" class="hidden absolute -top-1 -right-1 bg-gray-900 text-white text-[10px] min-w-4 h-4 px-1 rounded-full flex items-center justify-center font-medium">0</span>
-        </button>
-      </a>
-    </div>
-  </nav>
-
-  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-32">
-    <div class="mb-6">
-      <h1 class="text-2xl font-bold">Checkout</h1>
-      <p class="text-sm text-gray-500 mt-1">Finalize your order in a few quick steps.</p>
-    </div>
-
-    <section class="border border-gray-200 rounded-2xl p-5 mb-6 bg-gradient-to-b from-gray-50 to-white">
-      <h2 class="text-sm font-semibold text-gray-800">Checkout flow</h2>
-      <p class="text-xs text-gray-500 mt-1">Current stage: shipping and payment setup.</p>
-      <div class="mt-4 overflow-x-auto">
-        <ol class="flex gap-2 min-w-max pr-2">
-          <li class="flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-2">
-            <span class="w-5 h-5 rounded-full bg-emerald-600 text-white text-[11px] font-semibold flex items-center justify-center">1</span>
-            <span class="text-xs font-medium text-emerald-800">zobrazenie nákupného košíka</span>
-          </li>
-          <li class="flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-2">
-            <span class="w-5 h-5 rounded-full bg-emerald-600 text-white text-[11px] font-semibold flex items-center justify-center">2</span>
-            <span class="text-xs font-medium text-emerald-800">zmena množstva pre daný produkt</span>
-          </li>
-          <li class="flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-2">
-            <span class="w-5 h-5 rounded-full bg-emerald-600 text-white text-[11px] font-semibold flex items-center justify-center">3</span>
-            <span class="text-xs font-medium text-emerald-800">odobratie produktu</span>
-          </li>
-          <li class="flex items-center gap-2 rounded-full border border-gray-900 bg-gray-900 px-3 py-2">
-            <span class="w-5 h-5 rounded-full bg-white text-gray-900 text-[11px] font-semibold flex items-center justify-center">4</span>
-            <span class="text-xs font-semibold text-white">výber dopravy</span>
-          </li>
-          <li class="flex items-center gap-2 rounded-full border border-gray-900 bg-gray-900 px-3 py-2">
-            <span class="w-5 h-5 rounded-full bg-white text-gray-900 text-[11px] font-semibold flex items-center justify-center">5</span>
-            <span class="text-xs font-semibold text-white">výber platby</span>
-          </li>
-          <li class="flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-2">
-            <span class="w-5 h-5 rounded-full bg-gray-100 text-gray-500 text-[11px] font-semibold flex items-center justify-center">6</span>
-            <span class="text-xs font-medium text-gray-600">zadanie dodacích údajov</span>
-          </li>
-          <li class="flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-2">
-            <span class="w-5 h-5 rounded-full bg-gray-100 text-gray-500 text-[11px] font-semibold flex items-center justify-center">7</span>
-            <span class="text-xs font-medium text-gray-600">dokončenie objednávky</span>
-          </li>
-        </ol>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>L - Checkout</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Montserrat", sans-serif;
+      }
+      .font-display {
+        font-family: "Montserrat", sans-serif;
+      }
+    </style>
+  </head>
+  <body class="bg-white text-gray-900 antialiased">
+    <nav
+      class="flex items-center justify-between px-8 py-4 border-b border-gray-100 sticky top-0 bg-white/90 backdrop-blur z-50"
+    >
+      <span class="text-2xl font-display font-bold tracking-tight">
+        <a href="index.html">L</a>
+      </span>
+      <div class="flex items-center gap-3">
+        <a href="login.html" title="Sign in">
+          <button
+            class="px-4 py-1.5 text-sm rounded border border-gray-300 hover:border-gray-700 transition-colors"
+          >
+            Sign in
+          </button>
+        </a>
+        <a href="register.html" title="Register">
+          <button
+            class="px-4 py-1.5 text-sm rounded bg-gray-900 text-white hover:bg-black transition-colors"
+          >
+            Register
+          </button>
+        </a>
+        <a href="cart.html" title="Cart">
+          <button
+            class="relative ml-1 p-1.5 rounded hover:bg-gray-100 transition-colors"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="1.8"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9m12-9l2 9M9 21a1 1 0 100-2 1 1 0 000 2zm6 0a1 1 0 100-2 1 1 0 000 2z"
+              />
+            </svg>
+            <span
+              id="cartCountBadge"
+              class="hidden absolute -top-1 -right-1 bg-gray-900 text-white text-[10px] min-w-4 h-4 px-1 rounded-full flex items-center justify-center font-medium"
+              >0</span
+            >
+          </button>
+        </a>
       </div>
-    </section>
+    </nav>
 
-    <div class="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-6">
-      <form id="checkoutForm" class="space-y-6">
-        <section class="border border-gray-200 rounded-xl p-5">
-          <h3 class="text-sm font-semibold mb-3">Shipping method</h3>
-          <div class="space-y-2">
-            <label class="flex items-center justify-between gap-3 border border-gray-200 rounded-lg px-3 py-2.5 cursor-pointer hover:border-gray-400 transition-colors">
-              <span class="text-sm">Instant email delivery</span>
-              <div class="flex items-center gap-2">
-                <span class="text-sm font-semibold">Free</span>
-                <input type="radio" name="shipping" value="email" data-cost="0" checked class="accent-gray-900"/>
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-32">
+      <div class="mb-6">
+        <h1 class="text-2xl font-bold">Checkout</h1>
+        <p class="text-sm text-gray-500 mt-1">
+          Complete your order using the live Laravel checkout API.
+        </p>
+      </div>
+
+      <div id="checkoutMessage" class="hidden mb-6 rounded-2xl border px-4 py-3 text-sm"></div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-6">
+        <form id="checkoutForm" class="space-y-6">
+          <section class="border border-gray-200 rounded-xl p-5">
+            <h3 class="text-sm font-semibold mb-3">Shipping method</h3>
+            <div id="shippingOptions" class="space-y-2"></div>
+            <p id="shippingHint" class="text-xs text-gray-500 mt-3">
+              Shipping options are loaded from the backend.
+            </p>
+          </section>
+
+          <section class="border border-gray-200 rounded-xl p-5">
+            <h3 class="text-sm font-semibold mb-3">Payment method</h3>
+            <div id="paymentOptions" class="space-y-2"></div>
+          </section>
+
+          <section class="border border-gray-200 rounded-xl p-5">
+            <h3 class="text-sm font-semibold mb-3">Promo code</h3>
+            <div>
+              <label for="promoCodeInput" class="block text-sm text-gray-600 mb-1.5">Promo code</label>
+              <input
+                id="promoCodeInput"
+                type="text"
+                class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400 transition-colors"
+                placeholder="Optional discount code"
+              />
+            </div>
+            <p class="text-xs text-gray-500 mt-2">Discount validity is verified during order placement.</p>
+          </section>
+
+          <section class="border border-gray-200 rounded-xl p-5">
+            <h3 class="text-sm font-semibold mb-3">Delivery details</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-sm text-gray-600 mb-1.5" for="firstNameInput">First name</label>
+                <input id="firstNameInput" type="text" class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400 transition-colors"/>
               </div>
-            </label>
-            <label class="flex items-center justify-between gap-3 border border-gray-200 rounded-lg px-3 py-2.5 cursor-pointer hover:border-gray-400 transition-colors">
-              <span class="text-sm">Priority SMS + email</span>
-              <div class="flex items-center gap-2">
-                <span class="text-sm font-semibold">$1.99</span>
-                <input type="radio" name="shipping" value="priority" data-cost="1.99" class="accent-gray-900"/>
+              <div>
+                <label class="block text-sm text-gray-600 mb-1.5" for="lastNameInput">Last name</label>
+                <input id="lastNameInput" type="text" class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400 transition-colors"/>
               </div>
-            </label>
-          </div>
-        </section>
+              <div>
+                <label class="block text-sm text-gray-600 mb-1.5" for="emailInput">Email address</label>
+                <input id="emailInput" type="email" class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400 transition-colors"/>
+              </div>
+              <div>
+                <label class="block text-sm text-gray-600 mb-1.5" for="phoneInput">Phone number</label>
+                <input id="phoneInput" type="tel" class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400 transition-colors"/>
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block text-sm text-gray-600 mb-1.5" for="addressInput">Address</label>
+                <input id="addressInput" type="text" class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400 transition-colors"/>
+              </div>
+              <div>
+                <label class="block text-sm text-gray-600 mb-1.5" for="zipCodeInput">Postal code</label>
+                <input id="zipCodeInput" type="text" class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400 transition-colors"/>
+              </div>
+              <div>
+                <label class="block text-sm text-gray-600 mb-1.5" for="cityInput">City</label>
+                <input id="cityInput" type="text" class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400 transition-colors"/>
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block text-sm text-gray-600 mb-1.5" for="countryInput">Country</label>
+                <input id="countryInput" type="text" class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400 transition-colors"/>
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block text-sm text-gray-600 mb-1.5" for="notesInput">Notes</label>
+                <textarea id="notesInput" rows="4" class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400 transition-colors resize-y" placeholder="Optional notes for the order"></textarea>
+              </div>
+            </div>
+          </section>
+        </form>
 
-        <section class="border border-gray-200 rounded-xl p-5">
-          <h3 class="text-sm font-semibold mb-3">Payment method</h3>
-          <div class="space-y-2">
-            <label class="flex items-center justify-between gap-3 border border-gray-200 rounded-lg px-3 py-2.5 cursor-pointer hover:border-gray-400 transition-colors">
-              <span class="text-sm">Credit / Debit card</span>
-              <input type="radio" name="payment" value="card" checked class="accent-gray-900"/>
-            </label>
-            <label class="flex items-center justify-between gap-3 border border-gray-200 rounded-lg px-3 py-2.5 cursor-pointer hover:border-gray-400 transition-colors">
-              <span class="text-sm">PayPal</span>
-              <input type="radio" name="payment" value="paypal" class="accent-gray-900"/>
-            </label>
-            <label class="flex items-center justify-between gap-3 border border-gray-200 rounded-lg px-3 py-2.5 cursor-pointer hover:border-gray-400 transition-colors">
-              <span class="text-sm">Crypto (USDT)</span>
-              <input type="radio" name="payment" value="crypto" class="accent-gray-900"/>
-            </label>
-          </div>
+        <aside
+          class="border border-gray-200 rounded-xl p-5 h-fit sticky top-24"
+        >
+          <h3 class="text-sm font-semibold mb-3">Order summary</h3>
+          <div id="checkoutSummaryItems" class="space-y-3"></div>
 
-          <div id="cardDetails" class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div class="sm:col-span-2">
-              <label class="block text-sm text-gray-600 mb-1.5">Cardholder name</label>
-              <input id="cardHolderInput" type="text" autocomplete="cc-name" placeholder="ALEX SMITH" class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm tracking-wide focus:outline-none focus:border-gray-400 transition-colors"/>
+          <div class="border-t border-gray-100 mt-4 pt-4 space-y-2 text-sm">
+            <div class="flex justify-between">
+              <span class="text-gray-500">Products</span>
+              <span id="summaryProducts" class="font-medium">0</span>
             </div>
-            <div class="sm:col-span-2">
-              <label class="block text-sm text-gray-600 mb-1.5">Card number</label>
-              <input id="cardNumberInput" type="text" inputmode="numeric" autocomplete="cc-number" placeholder="4242 4242 4242 4242" class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm tracking-widest focus:outline-none focus:border-gray-400 transition-colors"/>
+            <div class="flex justify-between">
+              <span class="text-gray-500">Subtotal</span>
+              <span id="summarySubtotal" class="font-medium">€0.00</span>
             </div>
-            <div>
-              <label class="block text-sm text-gray-600 mb-1.5">Expiry date</label>
-              <input id="cardExpiryInput" type="text" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/YY" class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm tracking-wide focus:outline-none focus:border-gray-400 transition-colors"/>
+            <div class="flex justify-between">
+              <span class="text-gray-500">Shipping</span>
+              <span id="summaryShipping" class="font-medium">€0.00</span>
             </div>
-            <div>
-              <label class="block text-sm text-gray-600 mb-1.5">CVV</label>
-              <input id="cardCvvInput" type="password" inputmode="numeric" autocomplete="cc-csc" placeholder="123" class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm tracking-widest focus:outline-none focus:border-gray-400 transition-colors"/>
+            <div class="flex justify-between pt-2 border-t border-gray-100">
+              <span class="font-medium">Estimated total</span>
+              <span id="summaryTotal" class="font-bold">€0.00</span>
             </div>
           </div>
-          <p id="paymentHint" class="text-xs text-gray-500 mt-3 hidden">Card fields are not required for this payment method.</p>
-        </section>
+        </aside>
+      </div>
+    </main>
 
-        <section class="border border-gray-200 rounded-xl p-5">
-          <h3 class="text-sm font-semibold mb-3">Delivery details</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label class="block text-sm text-gray-600 mb-1.5">First name</label>
-              <input type="text" class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400 transition-colors"/>
-            </div>
-            <div>
-              <label class="block text-sm text-gray-600 mb-1.5">Last name</label>
-              <input type="text" class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400 transition-colors"/>
-            </div>
-            <div>
-              <label class="block text-sm text-gray-600 mb-1.5">Email address</label>
-              <input type="email" class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400 transition-colors"/>
-            </div>
-            <div>
-              <label class="block text-sm text-gray-600 mb-1.5">Phone number</label>
-              <input type="tel" class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400 transition-colors"/>
-            </div>
-            <div class="sm:col-span-2">
-              <label class="block text-sm text-gray-600 mb-1.5">Address</label>
-              <input type="text" class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400 transition-colors"/>
-            </div>
-            <div>
-              <label class="block text-sm text-gray-600 mb-1.5">Postal code</label>
-              <input type="text" class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400 transition-colors"/>
-            </div>
-            <div>
-              <label class="block text-sm text-gray-600 mb-1.5">City</label>
-              <input type="text" class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400 transition-colors"/>
-            </div>
-            <div class="sm:col-span-2">
-              <label class="block text-sm text-gray-600 mb-1.5">Country</label>
-              <input type="text" class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400 transition-colors"/>
-            </div>
-          </div>
-        </section>
-      </form>
-
-      <aside class="border border-gray-200 rounded-xl p-5 h-fit sticky top-24">
-        <h3 class="text-sm font-semibold mb-3">Order summary</h3>
-        <div id="checkoutSummaryItems" class="space-y-3"></div>
-
-        <div class="border-t border-gray-100 mt-4 pt-4 space-y-2 text-sm">
-          <div class="flex justify-between">
-            <span class="text-gray-500">Products</span>
-            <span id="summaryProducts" class="font-medium">0</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-gray-500">Subtotal</span>
-            <span id="summarySubtotal" class="font-medium">$0.00</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-gray-500">Shipping</span>
-            <span id="summaryShipping" class="font-medium">Free</span>
-          </div>
-          <div class="flex justify-between pt-2 border-t border-gray-100">
-            <span class="font-medium">Total</span>
-            <span id="summaryTotal" class="font-bold">$0.00</span>
-          </div>
-        </div>
-      </aside>
+    <div class="fixed bottom-0 left-0 right-0 bg-gray-900">
+      <button
+        id="completeOrderButton"
+        form="checkoutForm"
+        type="submit"
+        class="w-full py-4 text-white text-sm font-semibold tracking-wide hover:bg-black transition-colors"
+      >
+        Complete Order
+      </button>
     </div>
-  </main>
 
-  <div class="fixed bottom-0 left-0 right-0 bg-gray-900">
-    <button id="completeOrderButton" form="checkoutForm" type="submit" class="w-full py-4 text-white text-sm font-semibold tracking-wide hover:bg-black transition-colors">
-      Complete Order
-    </button>
-  </div>
+    <script src="store_data.js"></script>
+    <script src="/auth_ui.js"></script>
+    <script>
+      (() => {
+        const store = window.StoreMvp;
+        if (!store) return;
 
-  <script src="store_data.js"></script>
-  <script>
-    (() => {
-      const store = window.StoreMvp;
-      if (!store) return;
+        const checkoutForm = document.getElementById('checkoutForm');
+        const shippingOptions = document.getElementById('shippingOptions');
+        const paymentOptions = document.getElementById('paymentOptions');
+        const shippingHint = document.getElementById('shippingHint');
+        const checkoutSummaryItems = document.getElementById('checkoutSummaryItems');
+        const summaryProducts = document.getElementById('summaryProducts');
+        const summarySubtotal = document.getElementById('summarySubtotal');
+        const summaryShipping = document.getElementById('summaryShipping');
+        const summaryTotal = document.getElementById('summaryTotal');
+        const completeOrderButton = document.getElementById('completeOrderButton');
+        const checkoutMessage = document.getElementById('checkoutMessage');
+        const cartCountBadge = document.getElementById('cartCountBadge');
+        const promoCodeInput = document.getElementById('promoCodeInput');
 
-      const cartCountBadge = document.getElementById('cartCountBadge');
-      const summaryItems = document.getElementById('checkoutSummaryItems');
-      const summaryProducts = document.getElementById('summaryProducts');
-      const summarySubtotal = document.getElementById('summarySubtotal');
-      const summaryShipping = document.getElementById('summaryShipping');
-      const summaryTotal = document.getElementById('summaryTotal');
-      const completeOrderButton = document.getElementById('completeOrderButton');
-      const checkoutForm = document.getElementById('checkoutForm');
-      const shippingInputs = Array.from(document.querySelectorAll('input[name="shipping"]'));
-      const paymentInputs = Array.from(document.querySelectorAll('input[name="payment"]'));
-      const cardDetails = document.getElementById('cardDetails');
-      const paymentHint = document.getElementById('paymentHint');
-      const cardHolderInput = document.getElementById('cardHolderInput');
-      const cardNumberInput = document.getElementById('cardNumberInput');
-      const cardExpiryInput = document.getElementById('cardExpiryInput');
-      const cardCvvInput = document.getElementById('cardCvvInput');
+        const firstNameInput = document.getElementById('firstNameInput');
+        const lastNameInput = document.getElementById('lastNameInput');
+        const emailInput = document.getElementById('emailInput');
+        const phoneInput = document.getElementById('phoneInput');
+        const addressInput = document.getElementById('addressInput');
+        const zipCodeInput = document.getElementById('zipCodeInput');
+        const cityInput = document.getElementById('cityInput');
+        const countryInput = document.getElementById('countryInput');
+        const notesInput = document.getElementById('notesInput');
 
-      let cart = store.readCart({ withDemo: true });
+        let cart = store.readCart();
+        let products = [];
+        let checkoutOptions = null;
 
-      const updateBadge = () => {
-        const count = store.getCartCount(cart);
-        cartCountBadge.textContent = count > 99 ? '99+' : String(count);
-        cartCountBadge.classList.toggle('hidden', count === 0);
-      };
+        const paymentLabels = {
+          CARD: 'Credit / Debit card',
+          CRYPTO: 'Crypto',
+          BANK_TRANSFER: 'Bank transfer',
+          CASH_ON_DELIVERY: 'Cash on delivery',
+        };
 
-      const getShippingCost = () => {
-        const selected = shippingInputs.find((input) => input.checked);
-        return Number.parseFloat(selected?.dataset.cost || '0') || 0;
-      };
+        const shippingLabels = {
+          EMAIL: 'Instant email delivery',
+          PICKUP: 'Personal pickup',
+          COURIER: 'Courier delivery',
+          ALZABOX: 'AlzaBox',
+          POST_OFFICE: 'Post office',
+          PACKETA: 'Packeta',
+        };
 
-      const digitsOnly = (value) => String(value || '').replace(/\D+/g, '');
+        const setMessage = (text, type = 'error') => {
+          if (!text) {
+            checkoutMessage.textContent = '';
+            checkoutMessage.className = 'hidden mb-6 rounded-2xl border px-4 py-3 text-sm';
+            return;
+          }
 
-      const formatCardNumber = (value) => {
-        const digits = digitsOnly(value).slice(0, 19);
-        return digits.match(/.{1,4}/g)?.join(' ') || '';
-      };
+          checkoutMessage.textContent = text;
+          checkoutMessage.className =
+            type === 'success'
+              ? 'mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800'
+              : type === 'info'
+                ? 'mb-6 rounded-2xl border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-800'
+                : 'mb-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700';
+        };
 
-      const formatExpiry = (value) => {
-        const digits = digitsOnly(value).slice(0, 4);
-        if (digits.length <= 2) return digits;
-        return `${digits.slice(0, 2)}/${digits.slice(2)}`;
-      };
+        const setLoading = (isLoading) => {
+          completeOrderButton.disabled = isLoading;
+          completeOrderButton.textContent = isLoading ? 'Placing order...' : 'Complete Order';
+          completeOrderButton.classList.toggle('opacity-60', isLoading);
+          completeOrderButton.classList.toggle('cursor-not-allowed', isLoading);
+        };
 
-      const setCardFieldState = () => {
-        const selectedPayment = paymentInputs.find((input) => input.checked)?.value;
-        const isCard = selectedPayment === 'card';
-        const cardInputs = [cardHolderInput, cardNumberInput, cardExpiryInput, cardCvvInput];
+        const updateBadge = () => {
+          const count = store.getCartCount(cart);
+          cartCountBadge.textContent = count > 99 ? '99+' : String(count);
+          cartCountBadge.classList.toggle('hidden', count === 0);
+        };
 
-        cardDetails.classList.toggle('hidden', !isCard);
-        paymentHint.classList.toggle('hidden', isCard);
+        const containsPhysical = () => {
+          return products.some((product) => product.type === 'PHYSICAL');
+        };
 
-        cardInputs.forEach((input) => {
-          input.disabled = !isCard;
-        });
-      };
+        const selectedShippingMethod = () => {
+          return document.querySelector('input[name="shipping_method"]:checked')?.value || '';
+        };
 
-      const renderSummary = () => {
-        const items = store.getCartItems(cart);
+        const selectedPaymentMethod = () => {
+          return document.querySelector('input[name="payment_method"]:checked')?.value || '';
+        };
 
-        if (items.length === 0) {
-          summaryItems.innerHTML = '<p class="text-sm text-gray-500">Your cart is empty. Add items before checkout.</p><a href="shop.html" class="inline-block mt-2 text-sm font-semibold text-gray-800 underline">Go to shop</a>';
-          summaryProducts.textContent = '0';
-          summarySubtotal.textContent = '$0.00';
-          summaryShipping.textContent = 'Free';
-          summaryTotal.textContent = '$0.00';
-          completeOrderButton.disabled = true;
-          completeOrderButton.classList.add('opacity-60', 'cursor-not-allowed');
-          updateBadge();
-          return;
-        }
+        const currentItems = () => {
+          const quantities = new Map(
+            store.getCartEntries(cart).map((entry) => [String(entry.productId), entry.quantity]),
+          );
 
-        summaryItems.innerHTML = items.map(({ product, qty }) => {
-          const lineTotal = store.formatMoney(product.price * qty);
+          return products.map((product) => ({
+            product,
+            quantity: quantities.get(String(product.id)) || 0,
+          })).filter((item) => item.quantity > 0);
+        };
 
-          return `
+        const currentShippingPrice = () => {
+          const selectedCode = containsPhysical() ? selectedShippingMethod() : 'EMAIL';
+          const method = checkoutOptions?.shipping_methods?.find((item) => item.code === selectedCode);
+          return Number(method?.price || 0);
+        };
+
+        const currency = () => {
+          return checkoutOptions?.currency || products[0]?.currency || 'EUR';
+        };
+
+        const renderSummary = () => {
+          const items = currentItems();
+
+          if (items.length === 0) {
+            checkoutSummaryItems.innerHTML = '<p class="text-sm text-gray-500">Your cart is empty. Add products before checkout.</p><a href="shop.html" class="inline-block mt-2 text-sm font-semibold text-gray-800 underline">Go to shop</a>';
+            summaryProducts.textContent = '0';
+            summarySubtotal.textContent = store.formatMoney(0, currency());
+            summaryShipping.textContent = store.formatMoney(0, currency());
+            summaryTotal.textContent = store.formatMoney(0, currency());
+            completeOrderButton.disabled = true;
+            completeOrderButton.classList.add('opacity-60', 'cursor-not-allowed');
+            updateBadge();
+            return;
+          }
+
+          const subtotal = items.reduce((sum, item) => sum + (Number(item.product.price) * item.quantity), 0);
+          const shipping = currentShippingPrice();
+          const total = subtotal + shipping;
+
+          checkoutSummaryItems.innerHTML = items.map(({ product, quantity }) => `
             <div class="flex items-center gap-3">
-              <img src="${product.image}" alt="${product.name} cover" class="w-14 h-14 rounded-lg object-cover bg-gray-100" loading="lazy"/>
+              <img src="${store.productImage(product, product.name)}" alt="${store.escapeHtml(product.name)} cover" class="w-14 h-14 rounded-lg object-cover bg-gray-100" loading="lazy"/>
               <div class="min-w-0 flex-1">
-                <p class="text-xs font-semibold text-gray-800 truncate">${product.name}</p>
-                <p class="text-xs text-gray-500">Qty ${qty}</p>
+                <p class="text-xs font-semibold text-gray-800 truncate">${store.escapeHtml(product.name)}</p>
+                <p class="text-xs text-gray-500">Qty ${quantity}</p>
               </div>
-              <p class="text-xs font-semibold text-gray-800">${lineTotal}</p>
+              <p class="text-xs font-semibold text-gray-800">${store.formatMoney(Number(product.price) * quantity, product.currency)}</p>
             </div>
-          `;
-        }).join('');
+          `).join('');
 
-        const productsCount = store.getCartCount(cart);
-        const subtotal = store.getSubtotal(cart);
-        const shippingCost = getShippingCost();
-        const total = subtotal + shippingCost;
+          summaryProducts.textContent = String(items.reduce((sum, item) => sum + item.quantity, 0));
+          summarySubtotal.textContent = store.formatMoney(subtotal, currency());
+          summaryShipping.textContent = store.formatMoney(shipping, currency());
+          summaryTotal.textContent = store.formatMoney(total, currency());
+          completeOrderButton.disabled = false;
+          completeOrderButton.classList.remove('opacity-60', 'cursor-not-allowed');
+          updateBadge();
+        };
 
-        summaryProducts.textContent = String(productsCount);
-        summarySubtotal.textContent = store.formatMoney(subtotal);
-        summaryShipping.textContent = shippingCost === 0 ? 'Free' : store.formatMoney(shippingCost);
-        summaryTotal.textContent = store.formatMoney(total);
+        const renderShippingOptions = () => {
+          if (!checkoutOptions) return;
 
-        completeOrderButton.disabled = false;
-        completeOrderButton.classList.remove('opacity-60', 'cursor-not-allowed');
-        updateBadge();
-      };
+          const methods = checkoutOptions.shipping_methods || [];
 
-      shippingInputs.forEach((input) => {
-        input.addEventListener('change', renderSummary);
-      });
+          if (!containsPhysical()) {
+            shippingOptions.innerHTML = `
+              <label class="flex items-center justify-between gap-3 border border-emerald-200 rounded-lg px-3 py-2.5 bg-emerald-50">
+                <span class="text-sm">Instant email delivery</span>
+                <div class="flex items-center gap-2">
+                  <span class="text-sm font-semibold">${store.formatMoney(0, currency())}</span>
+                  <input type="radio" name="shipping_method" value="EMAIL" checked class="accent-gray-900"/>
+                </div>
+              </label>
+            `;
+            shippingHint.textContent = 'Only email delivery is available because your cart contains digital products only.';
+            return;
+          }
 
-      paymentInputs.forEach((input) => {
-        input.addEventListener('change', () => {
-          setCardFieldState();
+          const visibleMethods = methods.filter((method) => method.code !== 'EMAIL');
+
+          shippingOptions.innerHTML = visibleMethods.map((method, index) => `
+            <label class="flex items-center justify-between gap-3 border border-gray-200 rounded-lg px-3 py-2.5 cursor-pointer hover:border-gray-400 transition-colors">
+              <span class="text-sm">${store.escapeHtml(shippingLabels[method.code] || method.code)}</span>
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-semibold">${store.formatMoney(method.price, currency())}</span>
+                <input type="radio" name="shipping_method" value="${method.code}" ${index === 0 ? 'checked' : ''} class="accent-gray-900"/>
+              </div>
+            </label>
+          `).join('');
+
+          shippingHint.textContent = 'Physical products require a pickup or delivery method.';
+        };
+
+        const renderPaymentOptions = () => {
+          if (!checkoutOptions) return;
+
+          const methods = checkoutOptions.payment_methods || [];
+
+          paymentOptions.innerHTML = methods.map((method, index) => `
+            <label class="flex items-center justify-between gap-3 border border-gray-200 rounded-lg px-3 py-2.5 cursor-pointer hover:border-gray-400 transition-colors">
+              <span class="text-sm">${store.escapeHtml(paymentLabels[method] || method)}</span>
+              <input type="radio" name="payment_method" value="${method}" ${index === 0 ? 'checked' : ''} class="accent-gray-900"/>
+            </label>
+          `).join('');
+        };
+
+        const populateCustomerDefaults = async () => {
+          try {
+            const auth = await store.requestJson('/api/auth/me');
+            if (!auth?.authenticated || !auth.user) return;
+
+            const nameParts = String(auth.user.name || '').trim().split(/\s+/).filter(Boolean);
+            if (nameParts.length > 0 && !firstNameInput.value.trim()) {
+              firstNameInput.value = nameParts.shift() || '';
+            }
+            if (nameParts.length > 0 && !lastNameInput.value.trim()) {
+              lastNameInput.value = nameParts.join(' ');
+            }
+            if (!emailInput.value.trim()) {
+              emailInput.value = auth.user.email || '';
+            }
+          } catch (_error) {
+            // Ignore prefill failures.
+          }
+        };
+
+        const loadData = async () => {
+          const entries = store.getCartEntries(cart);
+          const ids = entries.map((entry) => entry.productId);
+
+          if (ids.length === 0) {
+            products = [];
+            renderSummary();
+            return;
+          }
+
+          setMessage('Loading checkout details...', 'info');
+
+          try {
+            const [loadedProducts, options] = await Promise.all([
+              store.fetchCatalogProductsByIds(ids),
+              store.fetchCheckoutOptions(),
+            ]);
+
+            const availableIds = new Set(loadedProducts.map((product) => String(product.id)));
+            const sanitized = {};
+
+            entries.forEach((entry) => {
+              if (availableIds.has(String(entry.productId))) {
+                sanitized[String(entry.productId)] = entry.quantity;
+              }
+            });
+
+            cart = store.writeCart(sanitized);
+            products = loadedProducts;
+            checkoutOptions = options;
+
+            renderShippingOptions();
+            renderPaymentOptions();
+            renderSummary();
+            setMessage('');
+            populateCustomerDefaults();
+          } catch (error) {
+            setMessage(store.firstError(error.payload, 'Unable to initialize checkout right now.'));
+          }
+        };
+
+        shippingOptions.addEventListener('change', renderSummary);
+        paymentOptions.addEventListener('change', renderSummary);
+
+        checkoutForm.addEventListener('submit', async (event) => {
+          event.preventDefault();
+          setMessage('');
+
+          const items = currentItems();
+          if (items.length === 0) {
+            setMessage('Your cart is empty.');
+            return;
+          }
+
+          const fullName = [firstNameInput.value.trim(), lastNameInput.value.trim()]
+            .filter(Boolean)
+            .join(' ')
+            .trim();
+
+          if (!fullName) {
+            setMessage('Customer full name is required.');
+            return;
+          }
+
+          const payload = {
+            items: items.map(({ product, quantity }) => ({
+              product_id: Number(product.id),
+              quantity,
+            })),
+            promo_code: promoCodeInput.value.trim() || null,
+            payment_method: selectedPaymentMethod(),
+            shipping_method: containsPhysical() ? selectedShippingMethod() : 'EMAIL',
+            customer_full_name: fullName,
+            customer_email: emailInput.value.trim(),
+            customer_phone: phoneInput.value.trim(),
+            country: countryInput.value.trim(),
+            city: cityInput.value.trim(),
+            address: addressInput.value.trim(),
+            zip_code: zipCodeInput.value.trim(),
+            notes: notesInput.value.trim() || null,
+          };
+
+          setLoading(true);
+
+          try {
+            const response = await store.placeOrder(payload);
+            const order = response?.data;
+
+            if (!order?.order_number) {
+              throw new Error('Order number missing from response.');
+            }
+
+            store.writeCart({});
+            setMessage('Order placed successfully.', 'success');
+
+            window.setTimeout(() => {
+              window.location.assign(`cart_success.html?order=${encodeURIComponent(order.order_number)}`);
+            }, 300);
+          } catch (error) {
+            setMessage(store.firstError(error.payload, 'Unable to place order right now.'));
+          } finally {
+            setLoading(false);
+          }
         });
-      });
 
-      cardNumberInput.addEventListener('input', () => {
-        cardNumberInput.value = formatCardNumber(cardNumberInput.value);
-      });
+        window.addEventListener('cart:updated', () => {
+          cart = store.readCart();
+          updateBadge();
+        });
 
-      cardExpiryInput.addEventListener('input', () => {
-        cardExpiryInput.value = formatExpiry(cardExpiryInput.value);
-      });
-
-      cardCvvInput.addEventListener('input', () => {
-        cardCvvInput.value = digitsOnly(cardCvvInput.value).slice(0, 4);
-      });
-
-      checkoutForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-
-        if (store.getCartCount(cart) === 0) return;
-
-        store.writeCart({});
-        window.location.href = 'cart_success.html';
-      });
-
-      setCardFieldState();
-      renderSummary();
-    })();
-  </script>
-
-</body>
+        updateBadge();
+        loadData();
+      })();
+    </script>
+  </body>
 </html>

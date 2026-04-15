@@ -1,70 +1,263 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>L — Register</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-  <style>
-    body { font-family: 'Montserrat', sans-serif; }
-  </style>
-</head>
-<body class="bg-white text-gray-900 antialiased min-h-screen flex items-center justify-center px-4">
-
-  <div class="w-full max-w-sm">
-    <h1 class="text-2xl font-bold text-center mb-8">Create an account</h1>
-
-    <div class="space-y-3">
-      <!-- Username -->
-      <input
-        type="text"
-        placeholder="Enter Your Username"
-        class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm placeholder-gray-300 focus:outline-none focus:border-gray-400 transition-colors"
-      />
-
-      <!-- Email -->
-      <input
-        type="email"
-        placeholder="Enter Your Email"
-        class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm placeholder-gray-300 focus:outline-none focus:border-gray-400 transition-colors"
-      />
-
-      <!-- Phone -->
-      <input
-        type="tel"
-        placeholder="Enter Your Phone Number"
-        class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm placeholder-gray-300 focus:outline-none focus:border-gray-400 transition-colors"
-      />
-
-      <!-- Password -->
-      <div class="relative">
-        <input
-          type="password"
-          placeholder="Enter Your Password"
-          class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm placeholder-gray-300 focus:outline-none focus:border-gray-400 transition-colors pr-11"
-        />
-        <button class="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500 transition-colors" title="Show password">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
-          </svg>
-        </button>
-      </div>
-
-      <!-- Sign Up button -->
-      <a href="index.html">
-        <button class="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition-colors mt-1">
-          Sign Up
-        </button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>L - Register</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Montserrat", sans-serif;
+      }
+    </style>
+  </head>
+  <body
+    class="min-h-screen bg-white px-4 text-gray-900 antialiased flex items-center justify-center"
+  >
+    <main class="w-full max-w-sm">
+      <a href="/index.html" class="inline-flex text-sm text-gray-500 hover:text-gray-900 transition-colors">
+        Back to store
       </a>
 
-      <!-- Login link -->
-      <p class="text-center text-sm text-gray-500 pt-1">
-        <span class="underline underline-offset-2">Already have an account?</span>
-        <a href="login.html" class="text-blue-600 hover:text-blue-700 font-medium transition-colors ml-1">Login</a>
-      </p>
-    </div>
-  </div>
+      <h1 class="mt-6 mb-8 text-center text-2xl font-bold">Create an account</h1>
 
-</body>
+      <form id="registerForm" class="space-y-3">
+        <div
+          id="formMessage"
+          class="hidden rounded-xl border px-4 py-3 text-sm"
+          role="alert"
+        ></div>
+
+        <div>
+          <label for="nameInput" class="mb-1.5 block text-sm text-gray-600">Full name</label>
+          <input
+            id="nameInput"
+            name="name"
+            type="text"
+            placeholder="Enter your full name"
+            autocomplete="name"
+            required
+            class="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm placeholder-gray-300 transition-colors focus:border-gray-400 focus:outline-none"
+          />
+        </div>
+
+        <div>
+          <label for="emailInput" class="mb-1.5 block text-sm text-gray-600">Email</label>
+          <input
+            id="emailInput"
+            name="email"
+            type="email"
+            placeholder="Enter your email"
+            autocomplete="email"
+            required
+            class="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm placeholder-gray-300 transition-colors focus:border-gray-400 focus:outline-none"
+          />
+        </div>
+
+        <div class="relative">
+          <label for="passwordInput" class="mb-1.5 block text-sm text-gray-600">Password</label>
+          <input
+            id="passwordInput"
+            name="password"
+            type="password"
+            placeholder="Create a password"
+            autocomplete="new-password"
+            minlength="8"
+            required
+            class="w-full rounded-xl border border-gray-200 px-4 py-3 pr-11 text-sm placeholder-gray-300 transition-colors focus:border-gray-400 focus:outline-none"
+          />
+          <button
+            id="togglePasswordButton"
+            type="button"
+            class="absolute right-3.5 top-[46px] -translate-y-1/2 text-gray-300 transition-colors hover:text-gray-500"
+            title="Show password"
+            aria-label="Show password"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="1.8"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <div>
+          <label for="passwordConfirmationInput" class="mb-1.5 block text-sm text-gray-600">
+            Confirm password
+          </label>
+          <input
+            id="passwordConfirmationInput"
+            name="password_confirmation"
+            type="password"
+            placeholder="Repeat your password"
+            autocomplete="new-password"
+            minlength="8"
+            required
+            class="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm placeholder-gray-300 transition-colors focus:border-gray-400 focus:outline-none"
+          />
+        </div>
+
+        <p class="text-xs leading-relaxed text-gray-400">
+          Password must match the confirmation field and should be at least 8 characters.
+        </p>
+
+        <button
+          id="submitButton"
+          type="submit"
+          class="mt-1 w-full rounded-xl bg-blue-600 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
+        >
+          Sign Up
+        </button>
+
+        <p class="pt-1 text-center text-sm text-gray-500">
+          Already have an account?
+          <a
+            href="/login.html"
+            class="ml-1 font-medium text-blue-600 transition-colors hover:text-blue-700"
+            >Login</a
+          >
+        </p>
+      </form>
+    </main>
+
+    <script>
+      (() => {
+        const form = document.getElementById("registerForm");
+        const nameInput = document.getElementById("nameInput");
+        const emailInput = document.getElementById("emailInput");
+        const passwordInput = document.getElementById("passwordInput");
+        const passwordConfirmationInput = document.getElementById("passwordConfirmationInput");
+        const submitButton = document.getElementById("submitButton");
+        const formMessage = document.getElementById("formMessage");
+        const togglePasswordButton = document.getElementById("togglePasswordButton");
+
+        const setMessage = (text, type = "error") => {
+          formMessage.textContent = text;
+          formMessage.className =
+            type === "success"
+              ? "rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800"
+              : "rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700";
+          formMessage.classList.remove("hidden");
+        };
+
+        const clearMessage = () => {
+          formMessage.textContent = "";
+          formMessage.className = "hidden rounded-xl border px-4 py-3 text-sm";
+        };
+
+        const firstError = (payload) => {
+          if (payload && typeof payload.message === "string" && !payload.errors) {
+            return payload.message;
+          }
+
+          if (!payload || typeof payload !== "object" || !payload.errors) {
+            return "Unable to create an account right now.";
+          }
+
+          for (const value of Object.values(payload.errors)) {
+            if (Array.isArray(value) && value.length > 0) {
+              return value[0];
+            }
+          }
+
+          return payload.message || "Unable to create an account right now.";
+        };
+
+        const setLoading = (isLoading) => {
+          submitButton.disabled = isLoading;
+          submitButton.textContent = isLoading ? "Creating account..." : "Sign Up";
+        };
+
+        togglePasswordButton.addEventListener("click", () => {
+          const isHidden = passwordInput.type === "password";
+          passwordInput.type = isHidden ? "text" : "password";
+          togglePasswordButton.title = isHidden ? "Hide password" : "Show password";
+          togglePasswordButton.setAttribute("aria-label", togglePasswordButton.title);
+        });
+
+        const redirectIfAuthenticated = async () => {
+          try {
+            const response = await fetch("/api/auth/me", {
+              headers: {
+                Accept: "application/json",
+              },
+              credentials: "same-origin",
+            });
+
+            if (!response.ok) {
+              return;
+            }
+
+            const payload = await response.json();
+            if (payload.authenticated) {
+              window.location.replace("/index.html");
+            }
+          } catch (_error) {
+            // Ignore background auth check failures.
+          }
+        };
+
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          clearMessage();
+
+          if (passwordInput.value !== passwordConfirmationInput.value) {
+            setMessage("Password confirmation does not match.");
+            return;
+          }
+
+          setLoading(true);
+
+          try {
+            const response = await fetch("/api/auth/register", {
+              method: "POST",
+              credentials: "same-origin",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+              body: JSON.stringify({
+                name: nameInput.value.trim(),
+                email: emailInput.value.trim(),
+                password: passwordInput.value,
+                password_confirmation: passwordConfirmationInput.value,
+              }),
+            });
+
+            const payload = await response.json().catch(() => ({}));
+
+            if (!response.ok) {
+              setMessage(firstError(payload));
+              return;
+            }
+
+            setMessage(payload.message || "Registration completed.", "success");
+
+            window.setTimeout(() => {
+              window.location.assign(payload.redirect_to || "/index.html");
+            }, 450);
+          } catch (_error) {
+            setMessage("Server is unavailable. Start Laravel and try again.");
+          } finally {
+            setLoading(false);
+          }
+        });
+
+        redirectIfAuthenticated();
+      })();
+    </script>
+  </body>
 </html>
