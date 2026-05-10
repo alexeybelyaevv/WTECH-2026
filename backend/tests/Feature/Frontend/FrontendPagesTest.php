@@ -23,6 +23,7 @@ class FrontendPagesTest extends TestCase
 
         $response
             ->assertOk()
+            ->assertViewIs('storefront.index')
             ->assertSee('Digital Game Hub');
     }
 
@@ -72,6 +73,7 @@ class FrontendPagesTest extends TestCase
 
         $response
             ->assertOk()
+            ->assertViewIs('storefront.admin_manage')
             ->assertSee('Product management');
     }
 }

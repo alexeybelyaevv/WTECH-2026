@@ -8,7 +8,7 @@ Cielom projektu je webova aplikacia eshopu implementovana v PHP frameworku Larav
 
 - Backend: Laravel PHP framework
 - Databaza: PostgreSQL
-- Frontend: HTML5, Tailwind CSS CDN, vanilla JavaScript
+- Frontend: Laravel Blade sablony, Tailwind CSS CDN, vanilla JavaScript
 - Autentifikacia: Laravel session authentication
 - Ukladanie obrazkov: Laravel public storage disk
 - Spustenie: `cd backend`, `composer install`, `php artisan migrate --seed`, `php artisan storage:link`, `php artisan serve`
@@ -34,11 +34,11 @@ Zmena oproti povodnemu modelu: bola doplnena tabulka `user_carts`, pretoze pozia
 
 ## Navrhove rozhodnutia
 
-Role pouzivatelov su riesene jednoducho cez stlpec `users.role` s hodnotami `CUSTOMER` a `ADMIN`. Administratorske API a admin HTML stranky su chranene Laravel middleware `auth` a vlastnym middleware `admin`.
+Role pouzivatelov su riesene jednoducho cez stlpec `users.role` s hodnotami `CUSTOMER` a `ADMIN`. Administratorske API a admin Blade stranky su chranene Laravel middleware `auth` a vlastnym middleware `admin`.
 
 Opravnenia neboli modelovane ako samostatna permission tabulka, pretoze projekt rozlisuje iba dve roly a poziadavky nevyzaduju detailne ACL.
 
-Klientske HTML subory su servovane cez Laravel `FrontendController`. Dynamicke data sa nacitavaju cez Laravel JSON API. Tento pristup ponechava sablony citatelne a zaroven splna pouzitie Laravel backendu pre aplikačnu logiku, validaciu, databazu a autentifikaciu.
+Klientske a administratorske stranky su implementovane ako Blade sablony v `backend/resources/views/storefront` a servovane cez Laravel `FrontendController`. Dynamicke data sa nacitavaju cez Laravel JSON API. Tento pristup ponechava sablony citatelne a zaroven splna pouzitie Laravel backendu pre aplikacnu logiku, validaciu, databazu a autentifikaciu.
 
 Kosik neprihlaseneho pouzivatela je ulozeny v `localStorage`, aby bol nakup mozny bez registracie. Po prihlaseni sa vola `/api/cart/merge`, cim sa lokalny kosik prenesie do serverovej tabulky `user_carts`. Pri dalsich zmenach sa kosik synchronizuje cez `/api/cart`.
 
@@ -48,7 +48,7 @@ Platba kartou ma klientsku validaciu cisla karty cez Luhn algoritmus, expiracie 
 
 ### Zoznam produktov, filtrovanie, vyhladavanie a strankovanie
 
-Stranka `frontend/shop.html` vola `/api/products`. Backend `CatalogProductController@index` podporuje:
+Stranka `backend/resources/views/storefront/shop.blade.php` vola `/api/products`. Backend `CatalogProductController@index` podporuje:
 
 - plnotextove hladanie cez parameter `q`
 - filtrovanie podla ceny `min_price`, `max_price`
@@ -60,15 +60,15 @@ Stranka `frontend/shop.html` vola `/api/products`. Backend `CatalogProductContro
 
 ### Detail produktu
 
-Stranka `frontend/product_details.html` nacita detail cez `/api/products/{slug}`. Detail obsahuje nazov, opis, cenu, sklad, kategorie, platformy a galeriu obrazkov.
+Stranka `backend/resources/views/storefront/product_details.blade.php` nacita detail cez `/api/products/{slug}`. Detail obsahuje nazov, opis, cenu, sklad, kategorie, platformy a galeriu obrazkov.
 
 ### Pridanie produktu do kosika a zmena mnozstva
 
-Pridanie produktu sa vykona na detaile produktu alebo v katalogu. Kosik pouziva `frontend/store_data.js`, kde su funkcie `addItem`, `setItemQty`, `changeItemQty` a `removeItem`. Na stranke `frontend/cart.html` moze pouzivatel menit mnozstvo alebo odstranit produkt.
+Pridanie produktu sa vykona na detaile produktu alebo v katalogu. Kosik pouziva `frontend/store_data.js`, kde su funkcie `addItem`, `setItemQty`, `changeItemQty` a `removeItem`. Na stranke `backend/resources/views/storefront/cart.blade.php` moze pouzivatel menit mnozstvo alebo odstranit produkt.
 
 ### Nakupny kosik, doprava, platba a objednavka
 
-Checkout je v `frontend/cart_order.html`. Doprava a platba sa nacitavaju z `/api/checkout/options`. Objednavka sa odosiela na `/api/orders`, kde `StoreOrderRequest` validuje polozky, platbu, dopravu a dodacie udaje. `OrderController@store` prepocita ceny na serveri, overi sklad a vytvori `orders` a `order_items`.
+Checkout je v `backend/resources/views/storefront/cart_order.blade.php`. Doprava a platba sa nacitavaju z `/api/checkout/options`. Objednavka sa odosiela na `/api/orders`, kde `StoreOrderRequest` validuje polozky, platbu, dopravu a dodacie udaje. `OrderController@store` prepocita ceny na serveri, overi sklad a vytvori `orders` a `order_items`.
 
 ### Registracia, prihlasenie a odhlasenie
 
@@ -78,9 +78,9 @@ Registracia a prihlasenie pouzivaju `/api/auth/register` a `/api/auth/login`. Od
 
 Admin stranky:
 
-- `admin_manage.html` - zoznam produktov, vyhladavanie, strankovanie, edit/delete
-- `admin_new.html` - vytvorenie produktu, povinne minimalne 2 obrazky, vyber kategorii a platforiem
-- `admin_edit.html` - uprava produktu, nahravanie novych obrazkov, zoznam existujucich obrazkov a ich odobratie
+- `backend/resources/views/storefront/admin_manage.blade.php` - zoznam produktov, vyhladavanie, strankovanie, edit/delete
+- `backend/resources/views/storefront/admin_new.blade.php` - vytvorenie produktu, povinne minimalne 2 obrazky, vyber kategorii a platforiem
+- `backend/resources/views/storefront/admin_edit.blade.php` - uprava produktu, nahravanie novych obrazkov, zoznam existujucich obrazkov a ich odobratie
 
 Admin API fyzicky maze obrazky zo storage pri zmazani produktu alebo obrazku.
 

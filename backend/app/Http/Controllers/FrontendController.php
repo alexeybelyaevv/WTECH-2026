@@ -43,14 +43,13 @@ class FrontendController extends Controller
         'styles.css' => 'text/css; charset=UTF-8',
     ];
 
-    public function page(string $page): BinaryFileResponse
+    public function page(string $page)
     {
         abort_unless(in_array($page, self::PAGES, true), 404);
-        $path = $this->frontendPath("{$page}.html");
-        abort_unless(is_file($path), 404);
+        $view = "storefront.{$page}";
+        abort_unless(view()->exists($view), 404);
 
-        return response()->file($path, [
-            'Content-Type' => 'text/html; charset=UTF-8',
+        return response()->view($view, [], 200, [
             'Cache-Control' => 'no-store',
         ]);
     }

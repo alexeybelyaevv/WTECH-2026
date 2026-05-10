@@ -1,10 +1,10 @@
 # WTECH-2026
 
-Laravel based WTECH eshop project with a static HTML storefront served by Laravel, JSON API, PostgreSQL schema, seeded catalog data, customer checkout, session auth, server-synced cart for signed-in users, and an admin product-management interface.
+Laravel based WTECH eshop project with Blade storefront/admin views served by Laravel, JSON API, PostgreSQL schema, seeded catalog data, customer checkout, session auth, server-synced cart for signed-in users, and an admin product-management interface.
 
 ## Run
 
-The storefront frontend is now served by Laravel, so one server is enough.
+The storefront frontend is now served by Laravel Blade views, so one server is enough.
 
 1. Start PostgreSQL and create the database from `backend/.env`.
 2. Open `backend/.env` and check `DB_*` values.
@@ -28,6 +28,8 @@ Auth pages:
 
 No separate frontend server is needed.
 
+Blade storefront templates are in `backend/resources/views/storefront`. Shared storefront JS/CSS assets remain in `frontend/`.
+
 To refresh the seeded product catalog after code changes:
 
 ```bash
@@ -45,4 +47,3 @@ Admin login seeded by default:
 
 - email: `admin@example.com`
 - password: `admin12345`
-
