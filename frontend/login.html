@@ -119,6 +119,7 @@
       </form>
     </main>
 
+    <script src="store_data.js"></script>
     <script>
       (() => {
         const form = document.getElementById("loginForm");
@@ -225,7 +226,11 @@
             setMessage(payload.message || "Signed in successfully.", "success");
 
             window.setTimeout(() => {
-              window.location.assign(payload.redirect_to || "/index.html");
+              Promise.resolve(window.StoreMvp?.syncCartWithServer?.())
+                .catch(() => null)
+                .finally(() => {
+                  window.location.assign(payload.redirect_to || "/index.html");
+                });
             }, 450);
           } catch (_error) {
             setMessage("Server is unavailable. Start Laravel and try again.");

@@ -4,6 +4,10 @@
   const DEFAULT_LOCALE = "en-IE";
 
   let csrfTokenPromise = null;
+  let cartSyncEnabled = false;
+  let cartSyncInstalled = false;
+  let cartSyncTimer = null;
+  let applyingServerCart = false;
 
   const escapeHtml = (value) => {
     return String(value ?? "")
@@ -320,6 +324,70 @@
     });
   };
 
+  const fetchServerCart = async () => {
+    return requestJson("/api/cart");
+  };
+
+  const saveCartToServer = async (cartLike = readCart()) => {
+    return requestWithCsrf("/api/cart", {
+      method: "PUT",
+      body: JSON.stringify({
+        items: sanitizeCart(cartLike),
+      }),
+    });
+  };
+
+  const syncCartWithServer = async (cartLike = readCart()) => {
+    try {
+      const payload = await requestWithCsrf("/api/cart/merge", {
+        method: "POST",
+        body: JSON.stringify({
+          items: sanitizeCart(cartLike),
+        }),
+      });
+
+      applyingServerCart = true;
+      const cart = writeCart(payload?.items || {});
+      applyingServerCart = false;
+
+      return cart;
+    } catch (error) {
+      applyingServerCart = false;
+      if (error.status === 401 || error.status === 403) {
+        return readCart();
+      }
+
+      throw error;
+    }
+  };
+
+  const installCartSync = (auth = null) => {
+    if (!auth?.authenticated) {
+      return;
+    }
+
+    cartSyncEnabled = true;
+
+    if (cartSyncInstalled) {
+      return;
+    }
+
+    cartSyncInstalled = true;
+
+    window.addEventListener("cart:updated", (event) => {
+      if (!cartSyncEnabled || applyingServerCart) {
+        return;
+      }
+
+      window.clearTimeout(cartSyncTimer);
+      cartSyncTimer = window.setTimeout(() => {
+        saveCartToServer(event.detail?.cart || readCart()).catch(() => {
+          // Keep local cart usable even if the background sync fails.
+        });
+      }, 300);
+    });
+  };
+
   const firstError = (payload, fallback = "Request failed.") => {
     if (payload && typeof payload.message === "string" && !payload.errors) {
       return payload.message;
@@ -458,10 +526,12 @@
     fetchCatalogProductsByIds,
     fetchCheckoutOptions,
     fetchOrder,
+    fetchServerCart,
     firstError,
     formatMoney,
     getCartCount,
     getCartEntries,
+    installCartSync,
     placeholderImage,
     placeOrder,
     productCategoryLabel,
@@ -471,7 +541,9 @@
     removeItem,
     requestJson,
     requestWithCsrf,
+    saveCartToServer,
     setItemQty,
+    syncCartWithServer,
     updateAdminProduct,
     writeCart,
   };

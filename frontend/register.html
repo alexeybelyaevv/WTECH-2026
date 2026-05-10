@@ -133,6 +133,7 @@
       </form>
     </main>
 
+    <script src="store_data.js"></script>
     <script>
       (() => {
         const form = document.getElementById("registerForm");
@@ -203,7 +204,7 @@
 
             const payload = await response.json();
             if (payload.authenticated) {
-              window.location.replace("/index.html");
+              window.location.replace(payload.user?.role === "ADMIN" ? "/admin_manage.html" : "/index.html");
             }
           } catch (_error) {
             // Ignore background auth check failures.
@@ -247,7 +248,11 @@
             setMessage(payload.message || "Registration completed.", "success");
 
             window.setTimeout(() => {
-              window.location.assign(payload.redirect_to || "/index.html");
+              Promise.resolve(window.StoreMvp?.syncCartWithServer?.())
+                .catch(() => null)
+                .finally(() => {
+                  window.location.assign(payload.redirect_to || "/index.html");
+                });
             }, 450);
           } catch (_error) {
             setMessage("Server is unavailable. Start Laravel and try again.");

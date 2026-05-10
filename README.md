@@ -1,5 +1,7 @@
 # WTECH-2026
 
+Laravel based WTECH eshop project with a static HTML storefront served by Laravel, JSON API, PostgreSQL schema, seeded catalog data, customer checkout, session auth, server-synced cart for signed-in users, and an admin product-management interface.
+
 ## Run
 
 The storefront frontend is now served by Laravel, so one server is enough.
@@ -32,3 +34,15 @@ To refresh the seeded product catalog after code changes:
 cd backend
 php artisan db:seed --class=ProductSeeder
 ```
+
+## Submission
+
+Project documentation is in `docs/DOCUMENTATION.md`.
+
+Complete PostgreSQL dump with schema and data is in `database_dump/wtech_eshop_full.sql`.
+
+Admin login seeded by default:
+
+- email: `admin@example.com`
+- password: `admin12345`
+

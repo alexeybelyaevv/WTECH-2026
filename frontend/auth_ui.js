@@ -114,6 +114,14 @@
       }
 
       loginLinks.forEach((loginLink) => upgradeHeader(loginLink, auth));
+
+      if (window.StoreMvp) {
+        window.StoreMvp.installCartSync(auth);
+        const serverCart = await window.StoreMvp.fetchServerCart().catch(() => null);
+        if (serverCart?.items) {
+          window.StoreMvp.writeCart(serverCart.items);
+        }
+      }
     } catch (_error) {
       // Ignore auth UI errors and keep the default header state.
     }

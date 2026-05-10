@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\CatalogProductController;
 use App\Http\Controllers\Api\AdminProductController;
 use App\Http\Controllers\Api\AdminPromoCodeController;
+use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\OrderController;
 use Illuminate\Support\Facades\Route;
 
@@ -12,6 +13,12 @@ Route::prefix('products')->group(function () {
 });
 
 Route::get('/checkout/options', [OrderController::class, 'options']);
+
+Route::prefix('cart')->middleware(['web', 'auth'])->group(function () {
+    Route::get('/', [CartController::class, 'show']);
+    Route::put('/', [CartController::class, 'update']);
+    Route::post('/merge', [CartController::class, 'merge']);
+});
 
 Route::prefix('orders')->group(function () {
     Route::post('/', [OrderController::class, 'store']);
