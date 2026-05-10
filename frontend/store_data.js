@@ -186,6 +186,30 @@
     return `/storage/${candidate.replace(/^\/+/, "")}`;
   };
 
+  const imageFallbackLabel = (image) => {
+    return image?.alt || image?.getAttribute?.("aria-label") || "Product";
+  };
+
+  const replaceBrokenImage = (image) => {
+    if (!(image instanceof HTMLImageElement) || image.dataset.storeFallbackApplied === "1") {
+      return;
+    }
+
+    image.dataset.storeFallbackApplied = "1";
+    image.removeAttribute("srcset");
+    image.src = placeholderImage(imageFallbackLabel(image));
+  };
+
+  const installImageFallbacks = () => {
+    window.addEventListener(
+      "error",
+      (event) => {
+        replaceBrokenImage(event.target);
+      },
+      true,
+    );
+  };
+
   const productCategoryLabel = (product) => {
     return product?.categories?.[0]?.name || "Uncategorized";
   };
@@ -414,6 +438,8 @@
       },
     );
   };
+
+  installImageFallbacks();
 
   window.StoreMvp = {
     CART_KEY,

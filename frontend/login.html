@@ -188,7 +188,7 @@
 
             const payload = await response.json();
             if (payload.authenticated) {
-              window.location.replace("/index.html");
+              window.location.replace(payload.user?.role === "ADMIN" ? "/admin_manage.html" : "/index.html");
             }
           } catch (_error) {
             // Ignore background auth check failures.

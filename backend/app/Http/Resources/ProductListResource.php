@@ -4,7 +4,6 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Storage;
 
 /**
  * @mixin \App\Models\Product
@@ -31,7 +30,7 @@ class ProductListResource extends JsonResource
             'stock' => $this->stock,
             'is_active' => $this->is_active,
             'preview_image' => $previewPath,
-            'preview_image_url' => $previewPath ? Storage::disk('public')->url($previewPath) : null,
+            'preview_image_url' => $this->imageUrl($previewPath),
             'categories' => $this->categories->map(fn ($category) => [
                 'id' => $category->id,
                 'name' => $category->name,
@@ -43,5 +42,18 @@ class ProductListResource extends JsonResource
                 'slug' => $platform->slug,
             ])->values(),
         ];
+    }
+
+    private function imageUrl(?string $path): ?string
+    {
+        if (! $path) {
+            return null;
+        }
+
+        if (preg_match('/^https?:\/\//i', $path) || str_starts_with($path, 'data:')) {
+            return $path;
+        }
+
+        return '/storage/'.ltrim($path, '/');
     }
 }

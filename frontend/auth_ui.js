@@ -52,6 +52,17 @@
     return button;
   };
 
+  const createAdminLink = () => {
+    const link = document.createElement("a");
+    link.href = "/admin_manage.html";
+    link.className =
+      "rounded border border-gray-300 px-4 py-1.5 text-sm font-medium text-gray-800 transition-colors hover:border-gray-700";
+    link.textContent = "Admin products";
+    link.title = "Open product management";
+
+    return link;
+  };
+
   const upgradeHeader = (loginLink, auth) => {
     const container = loginLink.parentElement;
     if (!container || container.dataset.authEnhanced === "true") {
@@ -68,9 +79,13 @@
 
     const cartLink = container.querySelector(CART_SELECTOR);
     const userLabel = createUserLabel(auth.user?.name);
+    const adminLink = auth.user?.role === "ADMIN" ? createAdminLink() : null;
     const logoutButton = createLogoutButton();
 
     container.insertBefore(userLabel, cartLink || null);
+    if (adminLink) {
+      container.insertBefore(adminLink, cartLink || null);
+    }
     container.insertBefore(logoutButton, cartLink || null);
     container.dataset.authEnhanced = "true";
   };

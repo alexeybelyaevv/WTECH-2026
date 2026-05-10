@@ -12,6 +12,7 @@ The storefront frontend is now served by Laravel, so one server is enough.
 cd backend
 composer install
 php artisan key:generate
+php artisan storage:link
 php artisan migrate --seed
 php artisan serve
 ```
@@ -24,3 +25,10 @@ Auth pages:
 - `http://127.0.0.1:8000/register.html`
 
 No separate frontend server is needed.
+
+To refresh the seeded product catalog after code changes:
+
+```bash
+cd backend
+php artisan db:seed --class=ProductSeeder
+```

@@ -31,7 +31,7 @@
     </div>
   </nav>
 
-  <main class="max-w-4xl mx-auto px-6 py-10 pb-32">
+  <main class="max-w-4xl mx-auto px-6 py-10 pb-12">
     <div class="mb-8">
       <h1 class="text-2xl font-bold">Edit product</h1>
       <p id="productSlugLabel" class="text-sm text-gray-500 mt-1">Loading product...</p>
@@ -108,16 +108,14 @@
       <p class="text-sm text-gray-500 mt-3">The product id is missing or the item no longer exists.</p>
       <a href="admin_manage.html" class="inline-flex mt-6 px-6 py-3 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-black transition-colors">Back to products</a>
     </div>
-  </main>
 
-  <div class="fixed bottom-0 left-0 right-0 px-6 pb-6 bg-white pt-2 border-t border-gray-100">
-    <div class="max-w-4xl mx-auto flex flex-col sm:flex-row gap-3">
+    <div id="formActions" class="hidden mt-8 flex flex-col sm:flex-row gap-3">
       <a href="admin_manage.html" class="flex-1 inline-flex items-center justify-center py-4 rounded-xl border border-gray-200 text-sm font-semibold text-gray-700 hover:border-gray-400 transition-colors">Back</a>
       <button id="submitButton" form="productForm" type="submit" class="flex-1 py-4 bg-gray-900 text-white text-sm font-semibold rounded-xl hover:bg-black transition-colors">
         Save changes
       </button>
     </div>
-  </div>
+  </main>
 
   <script src="store_data.js"></script>
   <script>
@@ -137,6 +135,7 @@
       const imagesInput = document.getElementById('imagesInput');
       const newImagePreview = document.getElementById('newImagePreview');
       const submitButton = document.getElementById('submitButton');
+      const formActions = document.getElementById('formActions');
       const productSlugLabel = document.getElementById('productSlugLabel');
 
       const nameInput = document.getElementById('nameInput');
@@ -261,6 +260,7 @@
         renderExistingImages();
         renderNewImagePreview();
         productForm.classList.remove('hidden');
+        formActions.classList.remove('hidden');
         missingState.classList.add('hidden');
       };
 
@@ -367,6 +367,7 @@
           if (error.status === 404) {
             missingState.classList.remove('hidden');
             productForm.classList.add('hidden');
+            formActions.classList.add('hidden');
             productSlugLabel.textContent = 'Product not found';
             setMessage('');
             return;

@@ -39,7 +39,7 @@ class AuthController extends Controller
                 'message' => 'You are already signed in.',
                 'authenticated' => true,
                 'user' => $this->serializeUser($request->user()),
-                'redirect_to' => '/index.html',
+                'redirect_to' => $this->redirectForUser($request->user()),
             ], 409);
         }
 
@@ -64,7 +64,7 @@ class AuthController extends Controller
             'message' => 'Registration completed.',
             'authenticated' => true,
             'user' => $this->serializeUser($user),
-            'redirect_to' => '/index.html',
+            'redirect_to' => $this->redirectForUser($user),
         ], 201);
     }
 
@@ -75,7 +75,7 @@ class AuthController extends Controller
                 'message' => 'You are already signed in.',
                 'authenticated' => true,
                 'user' => $this->serializeUser($request->user()),
-                'redirect_to' => '/index.html',
+                'redirect_to' => $this->redirectForUser($request->user()),
             ], 409);
         }
 
@@ -89,7 +89,7 @@ class AuthController extends Controller
             'message' => 'Signed in successfully.',
             'authenticated' => true,
             'user' => $this->serializeUser($user),
-            'redirect_to' => '/index.html',
+            'redirect_to' => $this->redirectForUser($user),
         ]);
     }
 
@@ -117,5 +117,10 @@ class AuthController extends Controller
             'email' => $user->email,
             'role' => $user->role,
         ];
+    }
+
+    private function redirectForUser(User $user): string
+    {
+        return $user->isAdmin() ? '/admin_manage.html' : '/index.html';
     }
 }

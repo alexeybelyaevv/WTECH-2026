@@ -68,7 +68,7 @@
       </div>
     </nav>
 
-    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-32">
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-12">
       <div class="mb-6">
         <h1 class="text-2xl font-bold">Checkout</h1>
         <p class="text-sm text-gray-500 mt-1">
@@ -91,6 +91,34 @@
           <section class="border border-gray-200 rounded-xl p-5">
             <h3 class="text-sm font-semibold mb-3">Payment method</h3>
             <div id="paymentOptions" class="space-y-2"></div>
+            <div id="cardFields" class="hidden mt-4 rounded-xl border border-gray-200 bg-gray-50 p-4">
+              <div class="mb-4 flex items-start justify-between gap-3">
+                <div>
+                  <p class="text-sm font-semibold text-gray-900">Card details</p>
+                  <p class="mt-1 text-xs text-gray-500">Card data is validated in the browser and is not stored by this demo checkout.</p>
+                </div>
+                <span id="cardBrandLabel" class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-gray-500">Card</span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="sm:col-span-2">
+                  <label class="block text-sm text-gray-600 mb-1.5" for="cardNameInput">Name on card</label>
+                  <input id="cardNameInput" type="text" autocomplete="cc-name" class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400 transition-colors bg-white"/>
+                </div>
+                <div class="sm:col-span-2">
+                  <label class="block text-sm text-gray-600 mb-1.5" for="cardNumberInput">Card number</label>
+                  <input id="cardNumberInput" type="text" inputmode="numeric" autocomplete="cc-number" maxlength="23" placeholder="4242 4242 4242 4242" class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400 transition-colors bg-white"/>
+                </div>
+                <div>
+                  <label class="block text-sm text-gray-600 mb-1.5" for="cardExpiryInput">Expiry date</label>
+                  <input id="cardExpiryInput" type="text" inputmode="numeric" autocomplete="cc-exp" maxlength="5" placeholder="MM/YY" class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400 transition-colors bg-white"/>
+                </div>
+                <div>
+                  <label class="block text-sm text-gray-600 mb-1.5" for="cardCvcInput">CVC</label>
+                  <input id="cardCvcInput" type="text" inputmode="numeric" autocomplete="cc-csc" maxlength="4" placeholder="123" class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400 transition-colors bg-white"/>
+                </div>
+              </div>
+              <p id="cardError" class="hidden mt-3 text-xs font-medium text-red-600"></p>
+            </div>
           </section>
 
           <section class="border border-gray-200 rounded-xl p-5">
@@ -174,20 +202,17 @@
               <span id="summaryTotal" class="font-bold">€0.00</span>
             </div>
           </div>
+          <button
+            id="completeOrderButton"
+            form="checkoutForm"
+            type="submit"
+            class="mt-5 w-full rounded-xl bg-gray-900 px-5 py-4 text-sm font-semibold text-white transition-colors hover:bg-black"
+          >
+            Complete Order
+          </button>
         </aside>
       </div>
     </main>
-
-    <div class="fixed bottom-0 left-0 right-0 bg-gray-900">
-      <button
-        id="completeOrderButton"
-        form="checkoutForm"
-        type="submit"
-        class="w-full py-4 text-white text-sm font-semibold tracking-wide hover:bg-black transition-colors"
-      >
-        Complete Order
-      </button>
-    </div>
 
     <script src="store_data.js"></script>
     <script src="/auth_ui.js"></script>
@@ -209,6 +234,13 @@
         const checkoutMessage = document.getElementById('checkoutMessage');
         const cartCountBadge = document.getElementById('cartCountBadge');
         const promoCodeInput = document.getElementById('promoCodeInput');
+        const cardFields = document.getElementById('cardFields');
+        const cardError = document.getElementById('cardError');
+        const cardBrandLabel = document.getElementById('cardBrandLabel');
+        const cardNameInput = document.getElementById('cardNameInput');
+        const cardNumberInput = document.getElementById('cardNumberInput');
+        const cardExpiryInput = document.getElementById('cardExpiryInput');
+        const cardCvcInput = document.getElementById('cardCvcInput');
 
         const firstNameInput = document.getElementById('firstNameInput');
         const lastNameInput = document.getElementById('lastNameInput');
@@ -279,6 +311,97 @@
 
         const selectedPaymentMethod = () => {
           return document.querySelector('input[name="payment_method"]:checked')?.value || '';
+        };
+
+        const cardDigits = () => cardNumberInput.value.replace(/\D/g, '');
+
+        const detectCardBrand = (digits) => {
+          if (/^4/.test(digits)) return 'Visa';
+          if (/^(5[1-5]|2[2-7])/.test(digits)) return 'Mastercard';
+          if (/^3[47]/.test(digits)) return 'Amex';
+          if (/^6(?:011|5)/.test(digits)) return 'Discover';
+          return 'Card';
+        };
+
+        const luhnValid = (digits) => {
+          let sum = 0;
+          let shouldDouble = false;
+
+          for (let index = digits.length - 1; index >= 0; index -= 1) {
+            let digit = Number(digits[index]);
+
+            if (shouldDouble) {
+              digit *= 2;
+              if (digit > 9) digit -= 9;
+            }
+
+            sum += digit;
+            shouldDouble = !shouldDouble;
+          }
+
+          return digits.length >= 13 && digits.length <= 19 && sum % 10 === 0;
+        };
+
+        const expiryValid = (value) => {
+          const match = value.match(/^(\d{2})\/(\d{2})$/);
+          if (!match) return false;
+
+          const month = Number(match[1]);
+          const year = 2000 + Number(match[2]);
+          if (month < 1 || month > 12) return false;
+
+          const lastValidDay = new Date(year, month, 0, 23, 59, 59);
+          return lastValidDay >= new Date();
+        };
+
+        const setCardError = (message = '') => {
+          cardError.textContent = message;
+          cardError.classList.toggle('hidden', !message);
+        };
+
+        const renderCardFields = () => {
+          const isCardPayment = selectedPaymentMethod() === 'CARD';
+          cardFields.classList.toggle('hidden', !isCardPayment);
+
+          if (!isCardPayment) {
+            setCardError('');
+          }
+        };
+
+        const validateCardDetails = () => {
+          if (selectedPaymentMethod() !== 'CARD') {
+            return true;
+          }
+
+          const digits = cardDigits();
+          const cvc = cardCvcInput.value.replace(/\D/g, '');
+
+          if (cardNameInput.value.trim().length < 2) {
+            setCardError('Enter the name printed on the card.');
+            cardNameInput.focus();
+            return false;
+          }
+
+          if (!luhnValid(digits)) {
+            setCardError('Enter a valid card number.');
+            cardNumberInput.focus();
+            return false;
+          }
+
+          if (!expiryValid(cardExpiryInput.value.trim())) {
+            setCardError('Enter a valid future expiry date in MM/YY format.');
+            cardExpiryInput.focus();
+            return false;
+          }
+
+          if (!/^\d{3,4}$/.test(cvc)) {
+            setCardError('Enter a valid CVC.');
+            cardCvcInput.focus();
+            return false;
+          }
+
+          setCardError('');
+          return true;
         };
 
         const currentItems = () => {
@@ -386,6 +509,8 @@
               <input type="radio" name="payment_method" value="${method}" ${index === 0 ? 'checked' : ''} class="accent-gray-900"/>
             </label>
           `).join('');
+
+          renderCardFields();
         };
 
         const populateCustomerDefaults = async () => {
@@ -450,7 +575,32 @@
         };
 
         shippingOptions.addEventListener('change', renderSummary);
-        paymentOptions.addEventListener('change', renderSummary);
+        paymentOptions.addEventListener('change', () => {
+          renderCardFields();
+          renderSummary();
+        });
+
+        cardNumberInput.addEventListener('input', () => {
+          const digits = cardDigits().slice(0, 19);
+          cardNumberInput.value = digits.replace(/(\d{4})(?=\d)/g, '$1 ').trim();
+          cardBrandLabel.textContent = detectCardBrand(digits);
+          setCardError('');
+        });
+
+        cardExpiryInput.addEventListener('input', () => {
+          const digits = cardExpiryInput.value.replace(/\D/g, '').slice(0, 4);
+          cardExpiryInput.value = digits.length > 2 ? `${digits.slice(0, 2)}/${digits.slice(2)}` : digits;
+          setCardError('');
+        });
+
+        cardCvcInput.addEventListener('input', () => {
+          cardCvcInput.value = cardCvcInput.value.replace(/\D/g, '').slice(0, 4);
+          setCardError('');
+        });
+
+        cardNameInput.addEventListener('input', () => {
+          setCardError('');
+        });
 
         checkoutForm.addEventListener('submit', async (event) => {
           event.preventDefault();
@@ -469,6 +619,10 @@
 
           if (!fullName) {
             setMessage('Customer full name is required.');
+            return;
+          }
+
+          if (!validateCardDetails()) {
             return;
           }
 
